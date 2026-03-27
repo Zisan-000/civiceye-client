@@ -2,7 +2,7 @@ import { use, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 
 export default function SmartCategoryForm() {
-  const { user, dbUser, refreshDbUser } = use(AuthContext); // Added refreshDbUser
+  const { user, dbUser, refreshDbUser } = use(AuthContext);
   const [category, setCategory] = useState("");
   const [dynamicData, setDynamicData] = useState({});
   const [description, setDescription] = useState("");
@@ -104,298 +104,309 @@ export default function SmartCategoryForm() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 mt-10">
-      <h1 className="text-3xl font-bold mb-2 text-center text-primary">
-        Smart Issue Categorization
-      </h1>
-      <p className="text-center text-gray-500 mb-8">
-        Dynamic form fields change based on the selected issue type.
-      </p>
+    <>
+      <div className="max-w-3xl mx-auto p-6 mt-10">
+        <h1 className="text-3xl font-bold mb-2 text-center text-primary">
+          Smart Issue Categorization
+        </h1>
+        <p className="text-center text-gray-500 mb-8">
+          Dynamic form fields change based on the selected issue type.
+        </p>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-base-200 p-8 rounded-2xl shadow-xl"
-      >
-        <div className="mb-6">
-          <label className="label">
-            <span className="label-text font-semibold text-lg">
-              1. Select Issue Category
-            </span>
-          </label>
-          <select
-            className="select select-bordered select-lg w-full text-base bg-base-100"
-            value={category}
-            onChange={(e) => {
-              setCategory(e.target.value);
-              setDynamicData({});
-            }}
-            required
-          >
-            <option value="" disabled>
-              Select a category...
-            </option>
-            <option value="water">💧 Water & Plumbing</option>
-            <option value="noise">🔊 Noise Complaint</option>
-            <option value="road">🚧 Road & Pothole</option>
-            <option value="waste">🗑️ Garbage & Waste</option>
-            <option value="electrical">⚡ Electrical & Streetlight</option>
-          </select>
-        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="bg-base-200 p-8 rounded-2xl shadow-xl"
+        >
+          <div className="mb-6">
+            <label className="label">
+              <span className="label-text font-semibold text-lg">
+                1. Select Issue Category
+              </span>
+            </label>
+            <select
+              className="select select-bordered select-lg w-full text-base bg-base-100"
+              value={category}
+              onChange={(e) => {
+                setCategory(e.target.value);
+                setDynamicData({});
+              }}
+              required
+            >
+              <option value="" disabled>
+                Select a category...
+              </option>
+              <option value="water">💧 Water & Plumbing</option>
+              <option value="noise">🔊 Noise Complaint</option>
+              <option value="road">🚧 Road & Pothole</option>
+              <option value="waste">🗑️ Garbage & Waste</option>
+              <option value="electrical">⚡ Electrical & Streetlight</option>
+            </select>
+          </div>
 
-        {category && (
-          <div className="mb-6 p-5 bg-base-100 rounded-xl border border-primary/20 shadow-sm transition-all duration-300">
-            <h3 className="text-md font-bold text-primary mb-4 border-b pb-2">
-              Specific Details Required
-            </h3>
-            <div className="space-y-4">
-              {category === "water" && (
-                <>
-                  <div>
-                    <label className="label">
-                      <span className="label-text font-medium">
-                        Severity of Leak?
-                      </span>
-                    </label>
-                    <select
-                      className="select select-bordered w-full"
-                      onChange={(e) =>
-                        handleDynamicChange("severity", e.target.value)
-                      }
-                      required
-                    >
-                      <option value="">Select...</option>
-                      <option value="drop">Minor dripping</option>
-                      <option value="steady">Steady flow</option>
-                      <option value="flood">Severe flooding/pipe burst</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="label">
-                      <span className="label-text font-medium">
-                        Is the water foul-smelling?
-                      </span>
-                    </label>
-                    <div className="flex gap-6 px-2 mt-2">
-                      <label className="cursor-pointer flex items-center gap-2">
-                        <input
-                          type="radio"
-                          name="smell"
-                          className="radio radio-primary"
-                          value="yes"
-                          onChange={(e) =>
-                            handleDynamicChange("badSmell", e.target.value)
-                          }
-                          required
-                        />{" "}
-                        Yes
+          {category && (
+            <div className="mb-6 p-5 bg-base-100 rounded-xl border border-primary/20 shadow-sm transition-all duration-300">
+              <h3 className="text-md font-bold text-primary mb-4 border-b pb-2">
+                Specific Details Required
+              </h3>
+              <div className="space-y-4">
+                {category === "water" && (
+                  <>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          Severity of Leak?
+                        </span>
                       </label>
-                      <label className="cursor-pointer flex items-center gap-2">
+                      <select
+                        className="select select-bordered w-full"
+                        onChange={(e) =>
+                          handleDynamicChange("severity", e.target.value)
+                        }
+                        required
+                      >
+                        <option value="">Select...</option>
+                        <option value="drop">Minor dripping</option>
+                        <option value="steady">Steady flow</option>
+                        <option value="flood">
+                          Severe flooding/pipe burst
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          Is the water foul-smelling?
+                        </span>
+                      </label>
+                      <div className="flex gap-6 px-2 mt-2">
+                        <label className="cursor-pointer flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="smell"
+                            className="radio radio-primary"
+                            value="yes"
+                            onChange={(e) =>
+                              handleDynamicChange("badSmell", e.target.value)
+                            }
+                            required
+                          />{" "}
+                          Yes
+                        </label>
+                        <label className="cursor-pointer flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="smell"
+                            className="radio radio-primary"
+                            value="no"
+                            onChange={(e) =>
+                              handleDynamicChange("badSmell", e.target.value)
+                            }
+                          />{" "}
+                          No
+                        </label>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {category === "noise" && (
+                  <>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          Time of Occurrence?
+                        </span>
+                      </label>
+                      <select
+                        className="select select-bordered w-full"
+                        onChange={(e) =>
+                          handleDynamicChange("time", e.target.value)
+                        }
+                        required
+                      >
+                        <option value="">Select time...</option>
+                        <option value="morning">Morning (6 AM - 12 PM)</option>
+                        <option value="afternoon">
+                          Afternoon (12 PM - 6 PM)
+                        </option>
+                        <option value="night">Night (6 PM - 12 AM)</option>
+                        <option value="latenight">
+                          Late Night (12 AM - 6 AM)
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          Source of Noise?
+                        </span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="E.g., Construction, Loud Party, Generator"
+                        className="input input-bordered w-full"
+                        onChange={(e) =>
+                          handleDynamicChange("source", e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                  </>
+                )}
+
+                {category === "road" && (
+                  <>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          Size of Pothole/Damage?
+                        </span>
+                      </label>
+                      <select
+                        className="select select-bordered w-full"
+                        onChange={(e) =>
+                          handleDynamicChange("size", e.target.value)
+                        }
+                        required
+                      >
+                        <option value="">Select size...</option>
+                        <option value="small">Small (Nuisance)</option>
+                        <option value="medium">
+                          Medium (Requires slowing down)
+                        </option>
+                        <option value="large">
+                          Large (Dangerous to vehicles)
+                        </option>
+                      </select>
+                    </div>
+                  </>
+                )}
+
+                {category === "waste" && (
+                  <>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          Type of Waste?
+                        </span>
+                      </label>
+                      <select
+                        className="select select-bordered w-full"
+                        onChange={(e) =>
+                          handleDynamicChange("wasteType", e.target.value)
+                        }
+                        required
+                      >
+                        <option value="">Select waste type...</option>
+                        <option value="organic">Organic/Food Waste</option>
+                        <option value="plastic">Plastics & Packaging</option>
+                        <option value="construction">
+                          Construction Debris
+                        </option>
+                        <option value="hazardous">
+                          Hazardous (Glass, Chemicals)
+                        </option>
+                      </select>
+                    </div>
+                    <div className="mt-4">
+                      <label className="label cursor-pointer justify-start gap-4 p-2 bg-base-200 rounded-lg">
                         <input
-                          type="radio"
-                          name="smell"
-                          className="radio radio-primary"
-                          value="no"
+                          type="checkbox"
+                          className="checkbox checkbox-error"
                           onChange={(e) =>
-                            handleDynamicChange("badSmell", e.target.value)
+                            handleDynamicChange(
+                              "blockingRoad",
+                              e.target.checked,
+                            )
                           }
-                        />{" "}
-                        No
+                        />
+                        <span className="label-text font-medium">
+                          Is this blocking the road/walkway?
+                        </span>
                       </label>
                     </div>
-                  </div>
-                </>
-              )}
+                  </>
+                )}
 
-              {category === "noise" && (
-                <>
-                  <div>
-                    <label className="label">
-                      <span className="label-text font-medium">
-                        Time of Occurrence?
-                      </span>
-                    </label>
-                    <select
-                      className="select select-bordered w-full"
-                      onChange={(e) =>
-                        handleDynamicChange("time", e.target.value)
-                      }
-                      required
-                    >
-                      <option value="">Select time...</option>
-                      <option value="morning">Morning (6 AM - 12 PM)</option>
-                      <option value="afternoon">
-                        Afternoon (12 PM - 6 PM)
-                      </option>
-                      <option value="night">Night (6 PM - 12 AM)</option>
-                      <option value="latenight">
-                        Late Night (12 AM - 6 AM)
-                      </option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="label">
-                      <span className="label-text font-medium">
-                        Source of Noise?
-                      </span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="E.g., Construction, Loud Party, Generator"
-                      className="input input-bordered w-full"
-                      onChange={(e) =>
-                        handleDynamicChange("source", e.target.value)
-                      }
-                      required
-                    />
-                  </div>
-                </>
-              )}
-
-              {category === "road" && (
-                <>
-                  <div>
-                    <label className="label">
-                      <span className="label-text font-medium">
-                        Size of Pothole/Damage?
-                      </span>
-                    </label>
-                    <select
-                      className="select select-bordered w-full"
-                      onChange={(e) =>
-                        handleDynamicChange("size", e.target.value)
-                      }
-                      required
-                    >
-                      <option value="">Select size...</option>
-                      <option value="small">Small (Nuisance)</option>
-                      <option value="medium">
-                        Medium (Requires slowing down)
-                      </option>
-                      <option value="large">
-                        Large (Dangerous to vehicles)
-                      </option>
-                    </select>
-                  </div>
-                </>
-              )}
-
-              {category === "waste" && (
-                <>
-                  <div>
-                    <label className="label">
-                      <span className="label-text font-medium">
-                        Type of Waste?
-                      </span>
-                    </label>
-                    <select
-                      className="select select-bordered w-full"
-                      onChange={(e) =>
-                        handleDynamicChange("wasteType", e.target.value)
-                      }
-                      required
-                    >
-                      <option value="">Select waste type...</option>
-                      <option value="organic">Organic/Food Waste</option>
-                      <option value="plastic">Plastics & Packaging</option>
-                      <option value="construction">Construction Debris</option>
-                      <option value="hazardous">
-                        Hazardous (Glass, Chemicals)
-                      </option>
-                    </select>
-                  </div>
-                  <div className="mt-4">
-                    <label className="label cursor-pointer justify-start gap-4 p-2 bg-base-200 rounded-lg">
-                      <input
-                        type="checkbox"
-                        className="checkbox checkbox-error"
+                {category === "electrical" && (
+                  <>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          Specific Electrical Issue?
+                        </span>
+                      </label>
+                      <select
+                        className="select select-bordered w-full"
                         onChange={(e) =>
-                          handleDynamicChange("blockingRoad", e.target.checked)
+                          handleDynamicChange("electricalIssue", e.target.value)
                         }
-                      />
-                      <span className="label-text font-medium">
-                        Is this blocking the road/walkway?
-                      </span>
-                    </label>
-                  </div>
-                </>
-              )}
-
-              {category === "electrical" && (
-                <>
-                  <div>
-                    <label className="label">
-                      <span className="label-text font-medium">
-                        Specific Electrical Issue?
-                      </span>
-                    </label>
-                    <select
-                      className="select select-bordered w-full"
-                      onChange={(e) =>
-                        handleDynamicChange("electricalIssue", e.target.value)
-                      }
-                      required
-                    >
-                      <option value="">Select issue...</option>
-                      <option value="flickering">Streetlight Flickering</option>
-                      <option value="dead">Streetlight Completely Out</option>
-                      <option value="exposed_wire">
-                        Exposed/Hanging Wires (URGENT)
-                      </option>
-                      <option value="sparking">
-                        Transformer Sparking (URGENT)
-                      </option>
-                    </select>
-                  </div>
-                </>
-              )}
+                        required
+                      >
+                        <option value="">Select issue...</option>
+                        <option value="flickering">
+                          Streetlight Flickering
+                        </option>
+                        <option value="dead">Streetlight Completely Out</option>
+                        <option value="exposed_wire">
+                          Exposed/Hanging Wires (URGENT)
+                        </option>
+                        <option value="sparking">
+                          Transformer Sparking (URGENT)
+                        </option>
+                      </select>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
+          )}
+
+          <div className="mb-6">
+            <label className="label">
+              <span className="label-text font-semibold text-lg">
+                2. Additional Description
+              </span>
+            </label>
+            <textarea
+              className="textarea textarea-bordered w-full text-base bg-base-100"
+              placeholder="Provide any extra details here..."
+              rows="3"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
           </div>
-        )}
+          <div className="mb-6">
+            <label className="label">
+              <span className="label-text font-semibold text-lg">
+                2. Specific Location / Address
+              </span>
+            </label>
+            <textarea
+              className="textarea textarea-bordered w-full text-base bg-base-100 border-primary/40 focus:border-primary"
+              placeholder="Enter the exact address or landmarks (e.g., Road 5, Block C, near the yellow building)"
+              rows="2"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required // Make it required so you don't get reports without locations
+            ></textarea>
+          </div>
 
-        <div className="mb-6">
-          <label className="label">
-            <span className="label-text font-semibold text-lg">
-              2. Additional Description
-            </span>
-          </label>
-          <textarea
-            className="textarea textarea-bordered w-full text-base bg-base-100"
-            placeholder="Provide any extra details here..."
-            rows="3"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
-        </div>
-        <div className="mb-6">
-          <label className="label">
-            <span className="label-text font-semibold text-lg">
-              2. Specific Location / Address
-            </span>
-          </label>
-          <textarea
-            className="textarea textarea-bordered w-full text-base bg-base-100 border-primary/40 focus:border-primary"
-            placeholder="Enter the exact address or landmarks (e.g., Road 5, Block C, near the yellow building)"
-            rows="2"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            required // Make it required so you don't get reports without locations
-          ></textarea>
-        </div>
-
-        <button
-          type="submit"
-          disabled={dbUser?.trustScore < 30}
-          className={`btn btn-lg w-full rounded-full border-none shadow-xl transition-all ${
-            dbUser?.trustScore < 30
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-[#00ADB5] hover:bg-teal-400 text-white"
-          }`}
-        >
-          {dbUser?.trustScore < 30
-            ? "Account Restricted"
-            : "Submit Smart Report"}
-        </button>
-      </form>
-    </div>
+          <button
+            type="submit"
+            disabled={dbUser?.trustScore < 30}
+            className={`btn btn-lg w-full rounded-full border-none shadow-xl transition-all ${
+              dbUser?.trustScore < 30
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-[#00ADB5] hover:bg-teal-400 text-white"
+            }`}
+          >
+            {dbUser?.trustScore < 30
+              ? "Account Restricted"
+              : "Submit Smart Report"}
+          </button>
+        </form>
+      </div>
+    </>
   );
 }

@@ -20,19 +20,13 @@ const AuthProvider = ({ children }) => {
   //   console.log(user);
   const refreshDbUser = async (email) => {
     if (!email) {
-      // console.error("❌ refreshDbUser Error: No email provided!");
       return;
     }
 
     try {
-      // console.log(`📡 Fetching data for: ${email}...`);
-
       const res = await fetch(`http://localhost:1069/api/users/${email}`);
 
-      // console.log("📥 Response Status:", res.status);
-
       if (!res.ok) {
-        // console.error("❌ Server returned an error:", res.statusText);
         return;
       }
 
@@ -66,12 +60,12 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, googleProvider);
   };
 
-  const logout = () => {
-    return signOut(auth);
-  };
-
   const login = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const logout = () => {
+    return signOut(auth);
   };
 
   useEffect(() => {

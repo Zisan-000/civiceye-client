@@ -253,39 +253,60 @@ const Navbar = () => {
               {/* Profile Dropdown Menu */}
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content bg-white rounded-2xl z-50 mt-4 w-60 p-3 shadow-2xl border border-gray-100"
+                className="menu menu-sm dropdown-content bg-white rounded-2xl z-50 mt-4 w-64 p-3 shadow-2xl border border-gray-100"
               >
-                {/* User Email Header inside Dropdown */}
+                {/* --- 1. USER EMAIL HEADER (Fixed for long emails) --- */}
                 <li className="px-3 pb-3 mb-2 border-b border-gray-100 pointer-events-none">
-                  <span className="block text-xs text-gray-400 font-medium">
-                    Signed in as
-                  </span>
-                  <span className="block text-sm font-bold text-[#222831] truncate">
-                    {user.email}
-                  </span>
+                  <div className="flex flex-col items-start p-0 bg-transparent active:bg-transparent">
+                    <span className="text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-1">
+                      Signed in as
+                    </span>
+                    <span className="text-sm font-semibold text-[#222831] leading-tight break-all">
+                      {user.email}
+                    </span>
+                  </div>
                 </li>
 
+                {/* --- 2. MENU ITEMS --- */}
                 <li>
                   <Link
                     to="/profile"
-                    className="hover:bg-[#00ADB5]/10 hover:text-[#00ADB5] font-medium rounded-xl py-2"
+                    className="hover:bg-[#00ADB5]/10 hover:text-[#00ADB5] font-medium rounded-xl py-2.5 px-3 flex justify-between"
                   >
-                    My Profile{" "}
-                    <span className="badge bg-[#00ADB5] text-white border-none badge-sm">
+                    My Profile
+                    <span className="badge bg-[#00ADB5] text-white border-none badge-xs p-1 px-2">
                       New
                     </span>
                   </Link>
                 </li>
+
                 <li>
-                  <a className="hover:bg-[#00ADB5]/10 hover:text-[#00ADB5] font-medium rounded-xl py-2">
+                  <a className="hover:bg-[#00ADB5]/10 hover:text-[#00ADB5] font-medium rounded-xl py-2.5 px-3">
                     Settings
                   </a>
                 </li>
-                <li className="mt-1">
+
+                {/* --- 3. LOGOUT (Styled to match) --- */}
+                <li className="mt-2 pt-1 border-t border-gray-50">
                   <button
-                    className="btn btn-ghost btn-xs text-error font-bold"
+                    className="w-full text-left hover:bg-red-50 text-red-500 font-bold rounded-xl py-2.5 px-3 flex items-center gap-2"
                     onClick={() => logoutModalRef.current.showModal()}
                   >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <polyline points="16 17 21 12 16 7" />
+                      <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
                     Logout
                   </button>
                 </li>

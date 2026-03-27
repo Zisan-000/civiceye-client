@@ -187,6 +187,7 @@ export default function ReportProblem() {
       }
     } catch (error) {
       console.error("Network Error:", error);
+
       alert(
         "Could not connect to the backend. Please check if your server is running on port 1069.",
       );
