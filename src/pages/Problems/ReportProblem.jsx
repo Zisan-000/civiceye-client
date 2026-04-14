@@ -10,7 +10,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { AuthContext } from "../../provider/AuthProvider";
 
-// Fix for default marker icon missing in React-Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -19,7 +18,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-// 1. Define your areas with their centers and valid boundaries
+
 const REGIONS = {
   dhaka: {
     name: "Dhaka Division",
@@ -71,23 +70,23 @@ const REGIONS = {
   },
 };
 
-// 2. Helper Component to physically move the map when the dropdown changes
+
 function MapMover({ center, zoom }) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo(center, zoom, { duration: 1.5 }); // Smooth flying animation
+    map.flyTo(center, zoom, { duration: 1.5 }); 
   }, [center, zoom, map]);
   return null;
 }
 
-// 3. Updated Location Picker to use dynamic bounds
+
 function LocationPicker({ position, setPosition, setMapError, activeRegion }) {
   useMapEvents({
     click(e) {
       const { lat, lng } = e.latlng;
       const bounds = activeRegion.bounds;
 
-      // Dynamic Validation: Check if click is inside the CURRENTLY selected area
+      
       if (
         lat <= bounds.north &&
         lat >= bounds.south &&
@@ -119,7 +118,7 @@ export default function ReportProblem() {
 
   const activeRegion = REGIONS[selectedRegionKey];
 
-  // When user changes region, clear the old pin and error
+
   const handleRegionChange = (e) => {
     setSelectedRegionKey(e.target.value);
     setPosition(null);
@@ -156,11 +155,11 @@ export default function ReportProblem() {
       const result = await response.json();
 
       if (response.status === 403) {
-        alert(result.error); // Show the "Trust score below 30" message from backend
+        alert(result.error); // "Trust score below 30" message 
         return;
       }
 
-      // --- STEP 1: HANDLE DUPLICATES (409) ---
+      // ---  HANDLE DUPLICATES  ---
       if (response.status === 409) {
         const upvote = window.confirm(
           `${result.message}\n\nWould you like to upvote the existing report instead?`,
@@ -171,7 +170,7 @@ export default function ReportProblem() {
         return;
       }
 
-      // --- STEP 2: HANDLE NORMAL SUCCESS ---
+      // --- HANDLE NORMAL SUCCESS ---
       if (result.success) {
         if (refreshDbUser) refreshDbUser(user.email);
         alert(result.message || "Success! Complaint reported. +5 Trust Score.");
@@ -179,7 +178,7 @@ export default function ReportProblem() {
         setPosition(null);
         window.location.reload();
       } else {
-        // FIX: Use a fallback string if result.error is undefined
+        
         alert(
           "Server Error: " +
             (result.error || "An unexpected error occurred on the server."),
@@ -206,7 +205,7 @@ export default function ReportProblem() {
 
       if (response.ok) {
         alert("Upvoted successfully! This issue now has a higher priority.");
-        // Optional: clear the map pin since they decided not to post a new one
+      
         setPosition(null);
         setDescription("");
       }
@@ -215,7 +214,6 @@ export default function ReportProblem() {
     }
   };
 
-  // --- MISSING JSX RETURN BLOCK RESTORED HERE ---
   return (
     <div className="max-w-4xl mx-auto p-6 mt-10">
       <h1 className="text-3xl font-bold mb-6 text-center">
@@ -226,7 +224,7 @@ export default function ReportProblem() {
         onSubmit={handleSubmit}
         className="bg-base-200 p-6 rounded-xl shadow-lg"
       >
-        {/* Step 1: Region Selection */}
+   
         <div className="mb-6">
           <label className="label">
             <span className="label-text font-semibold text-lg">
@@ -246,7 +244,7 @@ export default function ReportProblem() {
           </select>
         </div>
 
-        {/* Step 2: Map Section */}
+  
         <div className="mb-6">
           <label className="label">
             <span className="label-text font-semibold text-lg">
@@ -268,10 +266,10 @@ export default function ReportProblem() {
                 attribution="&copy; OpenStreetMap contributors"
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              {/* This component moves the map when activeRegion changes */}
+ 
               <MapMover center={activeRegion.center} zoom={activeRegion.zoom} />
 
-              {/* This component handles clicks and validates boundaries */}
+   
               <LocationPicker
                 position={position}
                 setPosition={setPosition}
@@ -295,7 +293,7 @@ export default function ReportProblem() {
           )}
         </div>
 
-        {/* Step 3: Text Details */}
+
         <div className="mb-6">
           <label className="label">
             <span className="label-text font-semibold text-lg">

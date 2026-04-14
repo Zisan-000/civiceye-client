@@ -135,6 +135,10 @@ export default function SmartCategoryForm() {
               <option value="" disabled>
                 Select a category...
               </option>
+              <option value="Fire Hazard">🔥 Fire Hazard</option>
+              <option value="Environment">🌳 Environment</option>
+              <option value="Broken Bench">🪑 Broken Bench</option>
+              <option value="General">📝 General</option>
               <option value="water">💧 Water & Plumbing</option>
               <option value="noise">🔊 Noise Complaint</option>
               <option value="road">🚧 Road & Pothole</option>
@@ -358,10 +362,138 @@ export default function SmartCategoryForm() {
                     </div>
                   </>
                 )}
+
+
+                {category === "Fire Hazard" && (
+                  <>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium text-error font-bold">
+                          Is the fire spreading? (URGENT)
+                        </span>
+                      </label>
+                      <select
+                        className="select select-bordered select-error w-full"
+                        onChange={(e) =>
+                          handleDynamicChange("isSpreading", e.target.value)
+                        }
+                        required
+                      >
+                        <option value="">Select status...</option>
+                        <option value="yes">Yes, spreading rapidly</option>
+                        <option value="no">No, currently contained</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          What is burning?
+                        </span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="E.g., Garbage pile, Electrical box, Tree"
+                        className="input input-bordered w-full"
+                        onChange={(e) =>
+                          handleDynamicChange("burningMaterial", e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                  </>
+                )}
+
+                {/* --- NEW LOGIC FOR ENVIRONMENT --- */}
+                {category === "Environment" && (
+                  <>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          Type of Environmental Hazard?
+                        </span>
+                      </label>
+                      <select
+                        className="select select-bordered w-full"
+                        onChange={(e) =>
+                          handleDynamicChange("envType", e.target.value)
+                        }
+                        required
+                      >
+                        <option value="">Select issue...</option>
+                        <option value="chemical">Chemical Spill / Hazardous Waste</option>
+                        <option value="animal">Dead Animal / Biohazard</option>
+                        <option value="air">Severe Air Pollution / Smoke</option>
+                        <option value="water">Contaminated Water Body</option>
+                      </select>
+                    </div>
+                    <div className="mt-4">
+                      <label className="label cursor-pointer justify-start gap-4 p-2 bg-base-200 rounded-lg">
+                        <input
+                          type="checkbox"
+                          className="checkbox checkbox-warning"
+                          onChange={(e) =>
+                            handleDynamicChange("hasStrongOdor", e.target.checked)
+                          }
+                        />
+                        <span className="label-text font-medium">
+                          Is there a strong, toxic odor?
+                        </span>
+                      </label>
+                    </div>
+                  </>
+                )}
+
+                {/* --- NEW LOGIC FOR BROKEN BENCH --- */}
+                {category === "Broken Bench" && (
+                  <>
+                    <div>
+                      <label className="label">
+                        <span className="label-text font-medium">
+                          Material of the Bench?
+                        </span>
+                      </label>
+                      <select
+                        className="select select-bordered w-full"
+                        onChange={(e) =>
+                          handleDynamicChange("benchMaterial", e.target.value)
+                        }
+                        required
+                      >
+                        <option value="">Select material...</option>
+                        <option value="wood">Wood</option>
+                        <option value="metal">Metal</option>
+                        <option value="concrete">Concrete / Stone</option>
+                      </select>
+                    </div>
+                    <div className="mt-4">
+                      <label className="label cursor-pointer justify-start gap-4 p-2 bg-base-200 rounded-lg border border-warning/50">
+                        <input
+                          type="checkbox"
+                          className="checkbox checkbox-warning"
+                          onChange={(e) =>
+                            handleDynamicChange("hasSharpEdges", e.target.checked)
+                          }
+                        />
+                        <span className="label-text font-medium">
+                          Are there exposed sharp edges or nails? (Safety Risk)
+                        </span>
+                      </label>
+                    </div>
+                  </>
+                )}
+
+                {/* --- NEW LOGIC FOR GENERAL --- */}
+                {category === "General" && (
+                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <p className="text-sm text-blue-800">
+                      You selected <strong>General</strong>. Please provide a clear and detailed explanation of the issue in the "Additional Description" box below.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           )}
-
+            
           <div className="mb-6">
             <label className="label">
               <span className="label-text font-semibold text-lg">

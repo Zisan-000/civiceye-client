@@ -7,17 +7,18 @@ export default function ProblemList() {
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const ADMIN_EMAILS = ["ak01739394811@gmail.com", "your-email@gmail.com"];
+  const ADMIN_EMAILS = ["ak01739394811@gmail.com", "jannatul.ferdous17@g.bracu.ac.bd"];
   const isAdmin = ADMIN_EMAILS.includes(user?.email);
 
-  // --- 1. USER HANDLERS (Open Modal) ---
+  // --- STRICT LIFECYCLE ARRAY ---
+  const LIFECYCLE = ["Open", "In Review", "Work in Progress", "Resolved", "Closed"];
+
+  // --- 1. UNIFIED VOTING HANDLERS ---
   const handleUpvote = (id, reporterEmail) => {
-    // 1. Check for self-voting
     if (user?.email === reporterEmail) {
       toast.error("You cannot upvote your own report!");
       return;
     }
-    // 2. Open Modal
     setVoteModal({
       isOpen: true,
       type: "upvote",
@@ -27,12 +28,10 @@ export default function ProblemList() {
   };
 
   const handleFlag = (id, reporterEmail) => {
-    // 1. Check for self-flagging
     if (user?.email === reporterEmail) {
       toast.error("You cannot flag your own report!");
       return;
     }
-    // 2. Open Modal
     setVoteModal({
       isOpen: true,
       type: "flag",
@@ -41,9 +40,9 @@ export default function ProblemList() {
     });
   };
 
-  // --- 2. CONFIRMATION HANDLER (Does the Work) ---
+  // --- 2. CONFIRMATION HANDLER ---
   const confirmVote = async () => {
-    const { type, problemId } = voteModal;
+    const { type, problemId, reporterEmail } = voteModal;
     const endpoint = type === "upvote" ? "upvote" : "flag";
 
     try {
@@ -52,7 +51,7 @@ export default function ProblemList() {
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userEmail: user?.email }),
+          body: JSON.stringify({ userEmail: user?.email, reporterEmail }),
         },
       );
 
@@ -62,8 +61,6 @@ export default function ProblemList() {
         toast.success(
           `${type === "upvote" ? "Verified" : "Flagged"} successfully!`,
         );
-
-        // Auto-reload to sync all counts and arrays (Mutual Exclusion)
         setTimeout(() => {
           window.location.reload();
         }, 500);
@@ -74,7 +71,6 @@ export default function ProblemList() {
       console.error("Vote failed", err);
       toast.error("Server error. Try again.");
     } finally {
-      // Close modal regardless of outcome
       setVoteModal({
         isOpen: false,
         type: "",
@@ -84,69 +80,26 @@ export default function ProblemList() {
     }
   };
 
-  // --- 2. ADMIN HANDLERS ---
-  const handleAdminUpvote = async (id, newCount) => {
-    try {
-      const response = await fetch(
-        `http://localhost:1069/api/complaints/admin-upvote/${id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ newCount, adminEmail: user.email }),
-        },
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setProblems((prev) =>
-          prev.map((p) =>
-            p._id === id
-              ? {
-                  ...p,
-                  upvotes: parseInt(newCount),
-                  priority: data.newPriority || p.priority,
-                }
-              : p,
-          ),
-        );
-        toast.success("Upvotes updated");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleAdminFlag = async (id, newCount) => {
-    try {
-      const response = await fetch(
-        `http://localhost:1069/api/complaints/admin-flag/${id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            newCount: parseInt(newCount),
-            adminEmail: user.email,
-          }),
-        },
-      );
-      const data = await response.json();
-      if (data.success) {
-        setProblems((prev) =>
-          prev.map((p) =>
-            p._id === id
-              ? { ...p, flags: parseInt(newCount), priority: data.newPriority }
-              : p,
-          ),
-        );
-        toast.success("Flags updated");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
+  // --- 3. STATUS & DELETE HANDLERS ---
   const handleStatusChange = async (id, newStatus) => {
     const targetProblem = problems.find((p) => p._id === id);
     const reporterEmail = targetProblem?.userEmail;
+
+    let currentStatus = targetProblem?.status || "Open";
+    if (currentStatus.toLowerCase() === "pending") currentStatus = "Open";
+    if (currentStatus === "In-Progress") currentStatus = "Work in Progress";
+
+    if (newStatus !== "Fake" && currentStatus !== "Fake" && newStatus !== "Pending") {
+      const currentIndex = LIFECYCLE.indexOf(currentStatus);
+      const newIndex = LIFECYCLE.indexOf(newStatus);
+
+      if (newIndex !== currentIndex + 1 && newIndex !== currentIndex) {
+        const nextValidStep = LIFECYCLE[currentIndex + 1];
+        toast.error(`Invalid Sequence! Next step must be "${nextValidStep}".`);
+        return;
+      }
+    }
+
     try {
       const response = await fetch(
         `http://localhost:1069/api/complaints/status/${id}`,
@@ -161,16 +114,16 @@ export default function ProblemList() {
         },
       );
       if (response.ok) {
-        setProblems(
-          problems.map((p) => (p._id === id ? { ...p, status: newStatus } : p)),
-        );
-        toast.success("Status updated!");
         setProblems((prev) =>
           prev.map((p) => (p._id === id ? { ...p, status: newStatus } : p)),
         );
+        toast.success(`Status updated to ${newStatus}!`);
+      } else {
+        const errData = await response.json();
+        toast.error(errData.message || "Update failed");
       }
     } catch (err) {
-      toast.error("Update failed");
+      toast.error("Network error!");
       console.error(err);
     }
   };
@@ -190,7 +143,7 @@ export default function ProblemList() {
 
   const [voteModal, setVoteModal] = useState({
     isOpen: false,
-    type: "", // "upvote" or "flag"
+    type: "",
     problemId: null,
     reporterEmail: "",
   });
@@ -199,7 +152,42 @@ export default function ProblemList() {
     fetch("http://localhost:1069/api/complaints")
       .then((res) => res.json())
       .then((data) => {
-        setProblems(data);
+        const scoredProblems = data.map((prob) => {
+          let keywordWeight = 10;
+          let updatedCategory = prob.category || "General";
+          const cat = (prob.category || "").toLowerCase();
+          const desc = (prob.description || "").toLowerCase();
+
+          if (cat.includes("fire hazard") || cat.includes("electrical")) { keywordWeight = 40; } 
+          else if (cat.includes("water") || cat.includes("environment")) { keywordWeight = 25; } 
+          else if (cat.includes("waste") || cat.includes("road")) { keywordWeight = 15; } 
+          else {
+            if (desc.includes("fire") || desc.includes("smoke") || desc.includes("burn")) {
+              keywordWeight = 40; updatedCategory = "Fire Hazard";
+            } else if (desc.includes("electric") || desc.includes("wire") || desc.includes("shock") || desc.includes("spark")) {
+              keywordWeight = 35; updatedCategory = "Electrical";
+            } else if (desc.includes("flood") || desc.includes("water") || desc.includes("leak") || desc.includes("pipe")) {
+              keywordWeight = 25; updatedCategory = "Water Leak";
+            } else if (desc.includes("garbage") || desc.includes("trash") || desc.includes("smell")) {
+              keywordWeight = 15; updatedCategory = "Environment";
+            } else if (desc.includes("pothole") || desc.includes("broken")) {
+              keywordWeight = 15; updatedCategory = "General";
+            }
+          }
+
+          const upvotes = prob.upvotes || 0;
+          const postDate = new Date(prob.createdAt || new Date());
+          const hoursSincePosted = Math.max(0, (new Date() - postDate) / (1000 * 60 * 60));
+          const cappedHours = Math.min(hoursSincePosted, 48);
+
+          let rawScore = (keywordWeight * 2) + (upvotes * 1.5) + (cappedHours * 0.5);
+          let finalScore = Math.min(100, Math.max(1, Math.round(rawScore)));
+
+          return { ...prob, category: updatedCategory, urgencyScore: finalScore, status: prob.status || "Open" };
+        });
+
+        const sortedByUrgency = scoredProblems.sort((a, b) => b.urgencyScore - a.urgencyScore);
+        setProblems(sortedByUrgency);
         setLoading(false);
       })
       .catch((err) => {
@@ -211,58 +199,40 @@ export default function ProblemList() {
   const getStatusClass = (status) => {
     const s = status?.toLowerCase();
     switch (s) {
+      case "open":
       case "pending":
         return "badge-warning";
+      case "in review":
+        return "badge-info opacity-80";
+      case "work in progress":
       case "in-progress":
         return "badge-info";
       case "resolved":
         return "badge-success";
-      case "rejected":
-        return "badge-error";
+      case "closed":
+        return "badge-neutral";
       case "fake":
-        return "badge-error border-2 border-dotted font-bold  text-xl";
+        return "badge-error border-2 border-dotted font-bold text-xl";
       default:
         return "badge-ghost";
     }
   };
 
-  // sort
-  const STATUS_ORDER = {
-    Pending: 1,
-    "In-Progress": 2,
-    Resolved: 3,
-    Rejected: 4,
-  };
+  const STATUS_ORDER = { "Open": 1, "In Review": 2, "Work in Progress": 3, "Resolved": 4, "Closed": 5 };
 
-  const [sortType, setSortType] = useState("popularity");
+  const [sortType, setSortType] = useState("urgency");
   const sortedProblems = [...problems].sort((a, b) => {
     if (a.status === "Fake" && b.status !== "Fake") return 1;
     if (a.status !== "Fake" && b.status === "Fake") return -1;
-    if (sortType === "popularity") {
-      // Descending: Most upvotes first
-      return (b.upvotes || 0) - (a.upvotes || 0);
-    }
-    if (sortType === "date") {
-      // Descending: Newest first
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    }
-    if (sortType === "status") {
-      // Manual Sort: Pending (1) first, Rejected (4) last
-      // We use || 99 as a fallback for any undefined statuses
-      const orderA = STATUS_ORDER[a.status] || 99;
-      const orderB = STATUS_ORDER[b.status] || 99;
-      return orderA - orderB;
-    }
+    if (sortType === "urgency") return (b.urgencyScore || 0) - (a.urgencyScore || 0);
+    if (sortType === "popularity") return (b.upvotes || 0) - (a.upvotes || 0);
+    if (sortType === "date") return new Date(b.createdAt) - new Date(a.createdAt);
+    if (sortType === "status") return (STATUS_ORDER[a.status] || 99) - (STATUS_ORDER[b.status] || 99);
     return 0;
   });
 
   const handleMarkFake = async (id, reporterEmail) => {
-    if (
-      !window.confirm(
-        "ARE YOU SURE? This will deduct 50 Trust Score and mark this as Fake.",
-      )
-    )
-      return;
+    if (!window.confirm("ARE YOU SURE? This will deduct 50 Trust Score and mark this as Fake.")) return;
 
     try {
       const response = await fetch(
@@ -278,19 +248,13 @@ export default function ProblemList() {
       );
 
       const data = await response.json();
-
       if (data.success) {
         toast.success("User penalized! Report marked as Fake.");
-
-        // OPTION A: Instant UI Update (Fastest)
         setProblems((prev) =>
           prev.map((p) =>
             p._id === id ? { ...p, status: "Fake", priority: "Low" } : p,
           ),
         );
-
-        // OPTION B: Force Reload (Safest to sync Trust Score elsewhere)
-        // setTimeout(() => window.location.reload(), 1000);
       } else {
         toast.error(data.message || "Failed to mark as fake");
       }
@@ -306,6 +270,7 @@ export default function ProblemList() {
         <span className="loading loading-bars loading-lg text-primary"></span>
       </div>
     );
+
   return (
     <div className="max-w-7xl mx-auto p-6 mt-10">
       <div className="flex justify-between items-center mb-8">
@@ -321,6 +286,7 @@ export default function ProblemList() {
           value={sortType}
           onChange={(e) => setSortType(e.target.value)}
         >
+          <option value="urgency">🚨 Urgency </option>
           <option value="popularity">🔥 Popularity (Most Upvotes)</option>
           <option value="date">📅 Date (Newest First)</option>
           <option value="status">🚦 Status Workflow</option>
@@ -341,7 +307,6 @@ export default function ProblemList() {
             </tr>
           </thead>
           <tbody>
-            {/* CHANGE THIS: map over sortedProblems instead of problems */}
             {sortedProblems.map((prob) => (
               <tr
                 key={prob._id}
@@ -351,53 +316,32 @@ export default function ProblemList() {
                     : ""
                 }`}
               >
-                {/* 1. Reporter Info */}
                 <td>
-                  <div
-                    className={`${prob.status === "Fake" ? "" : "font-bold text-primary"}`}
-                  >
+                  <div className={`${prob.status === "Fake" ? "" : "font-bold text-primary"}`}>
                     {prob.userName || "Anonymous"}
                   </div>
                   <div className="text-xs opacity-50">{prob.userEmail}</div>
                 </td>
 
-                {/* 2. Problem Details */}
                 <td>
                   <div className="flex flex-col gap-1">
                     <span className="badge badge-outline badge-sm font-bold uppercase w-fit">
                       {prob.category || "General"}
                     </span>
-                    {prob.specificDetails &&
-                    Object.keys(prob.specificDetails).length > 0 ? (
+                    {prob.specificDetails && Object.keys(prob.specificDetails).length > 0 ? (
                       <div className="flex flex-wrap gap-1 mt-1">
-                        {Object.entries(prob.specificDetails).map(
-                          ([key, value]) => (
-                            <div
-                              key={key}
-                              className="badge badge-info badge-sm text-xs"
-                            >
-                              <span className="font-bold lowercase opacity-70">
-                                {key}:
-                              </span>{" "}
-                              {String(value)}
-                            </div>
-                          ),
-                        )}
+                        {Object.entries(prob.specificDetails).map(([key, value]) => (
+                          <div key={key} className="badge badge-info badge-sm text-xs">
+                            <span className="font-bold lowercase opacity-70">{key}:</span> {String(value)}
+                          </div>
+                        ))}
                       </div>
                     ) : (
-                      <p className="text-sm italic text-gray-600">
-                        {prob.description}
-                      </p>
-                    )}
-                    {prob.additionalNotes && (
-                      <p className="text-xs text-gray-400 mt-1 border-t pt-1">
-                        Note: {prob.additionalNotes}
-                      </p>
+                      <p className="text-sm italic text-gray-600">{prob.description}</p>
                     )}
                   </div>
                 </td>
 
-                {/* 3. Location Logic */}
                 <td>
                   <div className="text-sm">
                     {prob.location ? (
@@ -405,177 +349,101 @@ export default function ProblemList() {
                         <span className="font-semibold">{prob.region}</span>
                         <br />
                         <span className="text-xs font-mono text-gray-500">
-                          {prob.location.lat.toFixed(3)},{" "}
-                          {prob.location.lng.toFixed(3)}
+                          {prob.location.lat.toFixed(3)}, {prob.location.lng.toFixed(3)}
                         </span>
                       </>
                     ) : (
-                      <span className="text-xs italic text-gray-700">
-                        {prob.address || "No address"}
-                      </span>
+                      <span className="text-xs italic text-gray-700">{prob.address || "No address"}</span>
                     )}
                   </div>
                 </td>
 
-                {/* --- 4. COMBINED POPULARITY & PRIORITY COLUMN --- */}
                 <td>
                   <div className="flex flex-col items-start gap-2">
-                    <div
-                      className={`badge badge-sm font-bold ${
-                        prob.priority === "High"
-                          ? "badge-error animate-pulse"
-                          : prob.priority === "Low"
-                            ? "badge-primary opacity-50"
-                            : "badge-accent"
-                      }`}
-                    >
-                      {prob.priority || "Medium"}
+                    {/* 1. Dynamic Priority/Flag Badge */}
+                    <div className={`badge badge-sm font-bold ${
+                      (prob.flags || 0) > 5 ? "badge-ghost opacity-50 italic" : 
+                      (prob.upvotes || 0) > 10 ? "badge-error animate-pulse" : 
+                      "badge-accent"
+                    }`}>
+                      {(prob.flags || 0) > 5 ? "Flagged" : 
+                      (prob.upvotes || 0) > 10 ? "High" : 
+                      "Medium"}
                     </div>
 
-                    {isAdmin ? (
-                      <div className="flex flex-col gap-1 border-l-2 border-primary pl-2">
-                        <div className="flex items-center gap-1">
-                          <span className="text-[9px] font-bold">UP:</span>
-                          <input
-                            type="number"
-                            className="input input-bordered input-xs w-12"
-                            defaultValue={prob.upvotes || 0}
-                            onBlur={(e) =>
-                              handleAdminUpvote(prob._id, e.target.value)
-                            }
-                          />
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-[9px] font-bold">FL:</span>
-                          <input
-                            type="number"
-                            className="input input-bordered input-xs w-12"
-                            defaultValue={prob.flags || 0}
-                            onBlur={(e) =>
-                              handleAdminFlag(prob._id, e.target.value)
-                            }
-                          />
-                        </div>
+                    {/* 2. Unified voting buttons */}
+                    <div className="flex items-center gap-4 mt-1">
+                      <div className="flex flex-col items-center">
+                        <button 
+                          onClick={() => handleUpvote(prob._id, prob.userEmail)} 
+                          className="btn btn-circle btn-xs btn-outline btn-success"
+                          disabled={prob.status === "Fake"}
+                          title="Verify this issue"
+                        >▲</button>
+                        <span className="text-[10px] font-bold mt-1">{prob.upvotes || 0}</span>
                       </div>
-                    ) : (
-                      <div className="flex items-center gap-4">
-                        <div className="flex flex-col items-center">
-                          <button
-                            onClick={() =>
-                              handleUpvote(prob._id, prob.userEmail)
-                            }
-                            disabled={prob.upvotedBy?.includes(user?.email)}
-                            className={`btn btn-circle btn-xs ${prob.status === "Fake" ? "pointer-events-none opacity-20" : ""} ${
-                              prob.upvotedBy?.includes(user?.email)
-                                ? "btn-disabled"
-                                : "btn-outline btn-success"
-                            }`}
-                          >
-                            ▲
-                          </button>
-                          <span className="text-[10px] font-bold mt-1">
-                            {prob.upvotes || 0}
-                          </span>
-                        </div>
-                        <div className="flex flex-col items-center">
-                          <button
-                            onClick={() => handleFlag(prob._id, prob.userEmail)}
-                            disabled={prob.flaggedBy?.includes(user?.email)}
-                            className={`btn btn-circle btn-xs ${prob.status === "Fake" ? "pointer-events-none opacity-20" : ""} ${
-                              prob.flaggedBy?.includes(user?.email)
-                                ? "btn-disabled"
-                                : "btn-outline btn-error"
-                            }`}
-                          >
-                            ▼
-                          </button>
-                          <span className="text-[10px] font-bold mt-1">
-                            {prob.flags || 0}
-                          </span>
-                        </div>
+                      <div className="flex flex-col items-center">
+                        <button 
+                          onClick={() => handleFlag(prob._id, prob.userEmail)} 
+                          className="btn btn-circle btn-xs btn-outline btn-error"
+                          disabled={prob.status === "Fake"}
+                          title="Flag as incorrect"
+                        >▼</button>
+                        <span className="text-[10px] font-bold mt-1">{prob.flags || 0}</span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <div className=" flex gap-2 join-vertical  ">
+                  {prob.urgencyScore && (
+                      <div className="badge badge-error gap-2 font-black text-white shadow-md px-4 py-4 text-xs uppercase tracking-wider">
+                        🚨 Score: {prob.urgencyScore}/100
                       </div>
                     )}
+                  <span className={`badge ${getStatusClass(prob.status)} capitalize whitespace-nowrap px-4 py-3`}>
+                    {prob.status || "Open"}
+                  </span>
                   </div>
                 </td>
 
-                {/* 5. Status */}
-                <td>
-                  <div>
-                    <span
-                      className={`badge ${getStatusClass(prob.status)} capitalize whitespace-nowrap px-4 py-3`}
-                    >
-                      {prob.status || "pending"}
-                    </span>
-                  </div>
-                </td>
-
-                {/* 6. Date */}
                 <td>{new Date(prob.createdAt).toLocaleDateString()}</td>
 
-                {/* 7. ADMIN ACTIONS */}
                 {isAdmin && (
                   <td>
                     <div className="flex items-center gap-2">
-                      {/* 1. CONDITIONAL BUTTON: Fake? OR Restore */}
                       {prob.status === "Fake" ? (
-                        <button
-                          onClick={() =>
-                            handleStatusChange(prob._id, "Pending")
-                          }
-                          className="btn btn-xs btn-success btn-outline"
-                          title="Restore this report to Pending"
-                        >
-                          Restore
-                        </button>
+                        <button onClick={() => handleStatusChange(prob._id, "Open")} className="btn btn-xs btn-success btn-outline">Restore</button>
                       ) : (
-                        <button
-                          onClick={() =>
-                            handleMarkFake(prob._id, prob.userEmail)
-                          }
-                          className="btn btn-xs btn-error btn-outline hover:bg-error hover:text-white transition-all"
-                          title="Mark as Fake & Deduct 50 Trust Score"
-                        >
-                          Fake?
-                        </button>
+                        <button onClick={() => handleMarkFake(prob._id, prob.userEmail)} className="btn btn-xs btn-error btn-outline">Fake?</button>
                       )}
 
-                      {/* 2. STATUS DROPDOWN */}
                       <select
                         className="select select-bordered select-xs"
-                        onChange={(e) =>
-                          handleStatusChange(prob._id, e.target.value)
-                        }
-                        value={prob.status || "Pending"} // Use 'value' instead of 'defaultValue' for sync
+                        onChange={(e) => handleStatusChange(prob._id, e.target.value)}
+                        value={prob.status === "pending" || !prob.status ? "Open" : prob.status} 
                       >
-                        <option value="Pending">Pending</option>
-                        <option value="In-Progress">In Progress</option>
-                        <option value="Resolved">Resolved</option>
-                        <option value="Rejected">Rejected</option>
-                        {/* We allow 'Fake' to show in dropdown only if it's already Fake */}
-                        {prob.status === "Fake" && (
-                          <option value="Fake">Fake</option>
-                        )}
+                        {LIFECYCLE.map((step, index) => {
+                          let currentStatus = prob.status || "Open";
+                          if (currentStatus.toLowerCase() === "pending") currentStatus = "Open";
+                          if (currentStatus === "In-Progress") currentStatus = "Work in Progress";
+                          
+                          const currentIndex = LIFECYCLE.indexOf(currentStatus);
+                          const isAllowed = index === currentIndex || index === currentIndex + 1;
+                          
+                          return (
+                            <option key={step} value={step} disabled={!isAllowed}>
+                              {step}
+                            </option>
+                          );
+                        })}
+                        {prob.status === "Fake" && <option value="Fake">Fake</option>}
                       </select>
-
-                      {/* 3. DELETE BUTTON (Always works for Admin) */}
-                      <button
-                        onClick={() => handleDelete(prob._id)}
-                        className="btn btn-ghost btn-xs text-error p-0"
-                        title="Delete Report Permanently"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
+                      
+                      <button onClick={() => handleDelete(prob._id)} className="btn btn-ghost btn-xs text-error p-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                       </button>
                     </div>
@@ -587,37 +455,14 @@ export default function ProblemList() {
         </table>
       </div>
 
-      {problems.length === 0 && (
-        <div className="text-center mt-20 text-gray-400">
-          <p className="text-2xl">No issues reported yet.</p>
-        </div>
-      )}
-
       {voteModal.isOpen && (
         <div className="modal modal-open">
           <div className="modal-box border-2 border-[#00ADB5]">
-            <h3 className="font-bold text-lg">
-              Confirm {voteModal.type === "upvote" ? "Verification" : "Flag"}?
-            </h3>
-            <p className="py-4 text-sm">
-              Are you sure you want to {voteModal.type} this report?
-              {voteModal.type === "upvote"
-                ? " This helps the community identify real issues."
-                : " This will report the issue as spam or incorrect."}
-            </p>
+            <h3 className="font-bold text-lg">Confirm {voteModal.type === "upvote" ? "Verification" : "Flag"}?</h3>
+            <p className="py-4 text-sm">Are you sure you want to {voteModal.type} this report?</p>
             <div className="modal-action">
-              <button
-                className="btn btn-ghost"
-                onClick={() => setVoteModal({ isOpen: false })}
-              >
-                Cancel
-              </button>
-              <button
-                className={`btn ${voteModal.type === "upvote" ? "btn-success" : "btn-error"}`}
-                onClick={confirmVote}
-              >
-                Yes, {voteModal.type}
-              </button>
+              <button className="btn btn-ghost" onClick={() => setVoteModal({ isOpen: false })}>Cancel</button>
+              <button className={`btn ${voteModal.type === "upvote" ? "btn-success" : "btn-error"}`} onClick={confirmVote}>Yes, {voteModal.type}</button>
             </div>
           </div>
         </div>

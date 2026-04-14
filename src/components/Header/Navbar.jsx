@@ -143,7 +143,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/"
-                className="text-[#393E46] font-semibold hover:text-[#00ADB5] hover:bg-[#00ADB5]/10 rounded-full px-4"
+                className="text-[#393E46] font-semibold bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10 rounded-full px-4"
               >
                 Home
               </Link>
@@ -154,7 +154,7 @@ const Navbar = () => {
               <div
                 tabIndex={0}
                 role="button"
-                className="text-[#393E46] font-semibold hover:text-[#00ADB5] hover:bg-[#00ADB5]/10 rounded-full px-4 py-2"
+                className="text-[#393E46] font-semibold bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10 rounded-full px-4 py-2"
               >
                 Problems
               </div>
@@ -195,7 +195,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/about"
-                className="text-[#393E46] font-semibold hover:text-[#00ADB5] hover:bg-[#00ADB5]/10 rounded-full px-4"
+                className="text-[#393E46] font-semibold bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10 rounded-full px-4"
               >
                 About
               </Link>
