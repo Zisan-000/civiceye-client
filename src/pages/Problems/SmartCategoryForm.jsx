@@ -1,5 +1,6 @@
 import { use, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
+import toast from "react-hot-toast";
 
 export default function SmartCategoryForm() {
   const { user, dbUser, refreshDbUser } = use(AuthContext);
@@ -7,6 +8,7 @@ export default function SmartCategoryForm() {
   const [dynamicData, setDynamicData] = useState({});
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleDynamicChange = (field, value) => {
     setDynamicData((prev) => ({ ...prev, [field]: value }));
@@ -41,23 +43,53 @@ export default function SmartCategoryForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 1. Initial Trust Score Validation [cite: 23, 25]
     if (dbUser?.trustScore < 30) {
-      alert("Submission blocked: Your Trust Score is too low.");
+      toast.error("Submission blocked: Your Trust Score is too low.");
       return;
     }
 
-    const formData = {
-      userEmail: user?.email,
-      userName: user?.displayName || "Citizen",
-      category: category,
-      address: address,
-      specificDetails: dynamicData,
-      additionalNotes: description,
-      location: null, // This triggers the Address-based duplicate check in backend
-      createdAt: new Date(),
-    };
+    // Start a loading toast to show work is in progress
+    const loadingToast = toast.loading(
+      "Uploading image and submitting report...",
+    );
 
     try {
+      let beforeImageUrl = null;
+
+      // 2. Upload to ImgBB FIRST
+      if (selectedFile) {
+        const imgFormData = new FormData();
+        imgFormData.append("image", selectedFile);
+
+        const imgRes = await fetch(
+          `https://api.imgbb.com/1/upload?key=936b6268b95724d4891ad3e474de132d`,
+          {
+            method: "POST",
+            body: imgFormData,
+          },
+        );
+        const imgData = await imgRes.json();
+        if (imgData.success) {
+          beforeImageUrl = imgData.data.display_url;
+        }
+      }
+
+      // 3. Prepare final data [cite: 20]
+      const formData = {
+        userEmail: user?.email,
+        userName: user?.displayName || "Citizen",
+        category: category,
+        address: address,
+        specificDetails: dynamicData,
+        additionalNotes: description,
+        beforeImage: beforeImageUrl,
+        location: null,
+        createdAt: new Date(),
+      };
+
+      // 4. Send to Backend
       const response = await fetch("http://localhost:1069/api/complaints", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -66,12 +98,16 @@ export default function SmartCategoryForm() {
 
       const result = await response.json();
 
+      // Dismiss loading toast before showing final results
+      toast.dismiss(loadingToast);
+
+      // 5. Handle Responses
       if (response.status === 403) {
-        alert(result.error);
+        toast.error(result.error);
         return;
       }
 
-      // --- 2. Added Duplicate Check Logic (409) ---
+      // Handle Duplicate Check [cite: 26, 28]
       if (response.status === 409) {
         const upvote = window.confirm(
           `${result.message}\n\nWould you like to upvote the existing report instead?`,
@@ -82,24 +118,31 @@ export default function SmartCategoryForm() {
         return;
       }
 
-      // --- 3. Handle Normal Success ---
+      // 6. Final Success Logic [cite: 63]
       if (result.success) {
-        // Update Trust Score in Navbar
         if (refreshDbUser) refreshDbUser(user.email);
 
-        alert("Smart Category Report Submitted! ID: " + result.insertedId);
+        // Toast Success Message
+        toast.success("Smart Report Submitted Successfully!");
 
+        // Clear states
         setCategory("");
         setDynamicData({});
         setDescription("");
         setAddress("");
-        window.location.reload();
+        setSelectedFile(null);
+
+        // Small delay before reload so user can see the toast
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       } else {
-        alert("Error: " + (result.error || "Something went wrong"));
+        toast.error(result.error || "Something went wrong on the server.");
       }
     } catch (error) {
+      toast.dismiss(loadingToast);
       console.error("Connection Error:", error);
-      alert("Could not connect to the server.");
+      toast.error("Could not connect to the server. Check port 1069.");
     }
   };
 
@@ -363,12 +406,11 @@ export default function SmartCategoryForm() {
                   </>
                 )}
 
-
                 {category === "Fire Hazard" && (
                   <>
                     <div>
                       <label className="label">
-                        <span className="label-text font-medium text-error font-bold">
+                        <span className="label-text text-error font-bold">
                           Is the fire spreading? (URGENT)
                         </span>
                       </label>
@@ -420,9 +462,13 @@ export default function SmartCategoryForm() {
                         required
                       >
                         <option value="">Select issue...</option>
-                        <option value="chemical">Chemical Spill / Hazardous Waste</option>
+                        <option value="chemical">
+                          Chemical Spill / Hazardous Waste
+                        </option>
                         <option value="animal">Dead Animal / Biohazard</option>
-                        <option value="air">Severe Air Pollution / Smoke</option>
+                        <option value="air">
+                          Severe Air Pollution / Smoke
+                        </option>
                         <option value="water">Contaminated Water Body</option>
                       </select>
                     </div>
@@ -432,7 +478,10 @@ export default function SmartCategoryForm() {
                           type="checkbox"
                           className="checkbox checkbox-warning"
                           onChange={(e) =>
-                            handleDynamicChange("hasStrongOdor", e.target.checked)
+                            handleDynamicChange(
+                              "hasStrongOdor",
+                              e.target.checked,
+                            )
                           }
                         />
                         <span className="label-text font-medium">
@@ -471,7 +520,10 @@ export default function SmartCategoryForm() {
                           type="checkbox"
                           className="checkbox checkbox-warning"
                           onChange={(e) =>
-                            handleDynamicChange("hasSharpEdges", e.target.checked)
+                            handleDynamicChange(
+                              "hasSharpEdges",
+                              e.target.checked,
+                            )
                           }
                         />
                         <span className="label-text font-medium">
@@ -486,14 +538,16 @@ export default function SmartCategoryForm() {
                 {category === "General" && (
                   <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                     <p className="text-sm text-blue-800">
-                      You selected <strong>General</strong>. Please provide a clear and detailed explanation of the issue in the "Additional Description" box below.
+                      You selected <strong>General</strong>. Please provide a
+                      clear and detailed explanation of the issue in the
+                      "Additional Description" box below.
                     </p>
                   </div>
                 )}
               </div>
             </div>
           )}
-            
+
           <div className="mb-6">
             <label className="label">
               <span className="label-text font-semibold text-lg">
@@ -522,6 +576,25 @@ export default function SmartCategoryForm() {
               onChange={(e) => setAddress(e.target.value)}
               required // Make it required so you don't get reports without locations
             ></textarea>
+          </div>
+
+          <div className="form-control w-full my-4">
+            <label className="label">
+              <span className="label-text font-bold">
+                Upload Issue Photo (Before)
+              </span>
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setSelectedFile(e.target.files[0])}
+              className="file-input file-input-bordered file-input-primary w-full"
+            />
+            <label className="label">
+              <span className="label-text-alt opacity-60">
+                Help workers identify the issue quickly.
+              </span>
+            </label>
           </div>
 
           <button

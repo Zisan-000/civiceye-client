@@ -1,5 +1,5 @@
 import React, { use, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
 import { FaUserCircle } from "react-icons/fa";
 import toast from "react-hot-toast";
@@ -80,49 +80,78 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-white rounded-box z-50 mt-3 w-60 p-2 shadow-xl border border-gray-100"
             >
               <li>
-                <Link
+                <NavLink
                   to="/"
-                  className="text-[#393E46] font-medium hover:text-[#00ADB5]"
+                  className={({ isActive }) =>
+                    `font-medium transition-colors ${
+                      isActive
+                        ? "text-[#00ADB5] bg-[#00ADB5]/10"
+                        : "text-[#393E46] hover:text-[#00ADB5]"
+                    }`
+                  }
                 >
                   Home
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <span className="text-[#393E46] font-medium">Problems</span>
+                <span className="text-[#393E46] font-medium pointer-events-none">
+                  Problems
+                </span>
                 <ul className="p-2">
                   <li>
-                    <Link
+                    <NavLink
                       to="/problems/report"
                       onClick={() => document.activeElement.blur()}
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-[#00ADB5] bg-[#00ADB5]/10 font-bold"
+                          : "text-[#393E46]"
+                      }
                     >
                       Map Report
-                    </Link>
+                    </NavLink>
                   </li>
                   <li>
-                    <Link
+                    <NavLink
                       to="/problems/categorize"
                       onClick={() => document.activeElement.blur()}
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-[#00ADB5] bg-[#00ADB5]/10 font-bold"
+                          : "text-[#393E46]"
+                      }
                     >
                       Smart Form
-                    </Link>
+                    </NavLink>
                   </li>
                   <li>
-                    <Link
+                    <NavLink
                       to="/problems/list"
                       onClick={() => document.activeElement.blur()}
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-[#00ADB5] bg-[#00ADB5]/10 font-bold"
+                          : "text-[#393E46]"
+                      }
                     >
                       View All Issues
-                    </Link>
+                    </NavLink>
                   </li>
                 </ul>
               </li>
               <li>
-                <Link
+                <NavLink
                   to="/about"
-                  className="text-[#393E46] font-medium hover:text-[#00ADB5]"
+                  className={({ isActive }) =>
+                    `font-medium transition-colors ${
+                      isActive
+                        ? "text-[#00ADB5] bg-[#00ADB5]/10"
+                        : "text-[#393E46] hover:text-[#00ADB5]"
+                    }`
+                  }
                 >
                   About
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </div>
@@ -138,67 +167,102 @@ const Navbar = () => {
         </div>
 
         {/* ================= NAVBAR CENTER (Desktop Menu) ================= */}
-        <div className="navbar-center hidden lg:flex ">
+        <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1 gap-2 items-center">
+            {/* --- HOME LINK --- */}
             <li>
-              <Link
+              <NavLink
                 to="/"
-                className="text-[#393E46] font-semibold bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10 rounded-full px-4"
+                className={({ isActive }) =>
+                  `font-semibold rounded-full px-4 transition-all ${
+                    isActive
+                      ? "text-[#00ADB5] bg-[#00ADB5]/10 shadow-sm"
+                      : "text-[#393E46] bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10"
+                  }`
+                }
               >
                 Home
-              </Link>
+              </NavLink>
             </li>
 
-            {/* Desktop Hover Dropdown */}
-            <li className="dropdown dropdown-hover dropdown-bottom relative">
+            {/* --- PROBLEMS DROPDOWN --- */}
+            <li className="dropdown dropdown-bottom relative">
               <div
                 tabIndex={0}
                 role="button"
-                className="text-[#393E46] font-semibold bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10 rounded-full px-4 py-2"
+                className={`font-semibold rounded-full px-4 transition-all ${
+                  window.location.pathname.startsWith("/problems")
+                    ? "text-[#00ADB5] bg-[#00ADB5]/10 shadow-sm"
+                    : "text-[#393E46] bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10"
+                }`}
               >
                 Problems
               </div>
 
-              {/* THE FIX IS HERE: Added 'mt-3' for visual spacing, and the 'before:...' classes create an invisible hover bridge */}
-
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-white rounded-2xl z-50 w-56 p-2 shadow-xl border border-gray-100 mt-0 top-full left-0 "
+                className="dropdown-content menu bg-white rounded-2xl z-50 w-64 p-2 shadow-xl border border-gray-100 mt-2 top-full left-0 
+               before:content-[''] before:absolute before:-top-2 before:left-0 before:w-full before:h-2"
               >
                 <li>
-                  <Link
+                  <NavLink
                     to="/problems/report"
-                    className="hover:bg-[#00ADB5]/10 hover:text-[#00ADB5] rounded-xl font-medium py-3"
+                    className={({ isActive }) =>
+                      `rounded-xl font-medium py-3 ${
+                        isActive
+                          ? "text-[#00ADB5] bg-[#00ADB5]/10"
+                          : "hover:bg-[#00ADB5]/10 hover:text-[#00ADB5]"
+                      }`
+                    }
                   >
                     📍 Geo-Tagged Map Report
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link
+                  <NavLink
                     to="/problems/categorize"
-                    className="hover:bg-[#00ADB5]/10 hover:text-[#00ADB5] rounded-xl font-medium py-3"
+                    className={({ isActive }) =>
+                      `rounded-xl font-medium py-3 ${
+                        isActive
+                          ? "text-[#00ADB5] bg-[#00ADB5]/10"
+                          : "hover:bg-[#00ADB5]/10 hover:text-[#00ADB5]"
+                      }`
+                    }
                   >
                     📝 Smart Category Form
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link
+                  <NavLink
                     to="/problems/list"
-                    className="hover:bg-[#00ADB5]/10 hover:text-[#00ADB5] rounded-xl font-medium py-3"
+                    className={({ isActive }) =>
+                      `rounded-xl font-medium py-3 ${
+                        isActive
+                          ? "text-[#00ADB5] bg-[#00ADB5]/10"
+                          : "hover:bg-[#00ADB5]/10 hover:text-[#00ADB5]"
+                      }`
+                    }
                   >
                     📋 View All Problems
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </li>
 
+            {/* --- ABOUT LINK --- */}
             <li>
-              <Link
+              <NavLink
                 to="/about"
-                className="text-[#393E46] font-semibold bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10 rounded-full px-4"
+                className={({ isActive }) =>
+                  `font-semibold rounded-full px-4 transition-all ${
+                    isActive
+                      ? "text-[#00ADB5] bg-[#00ADB5]/10 shadow-sm"
+                      : "text-[#393E46] bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10"
+                  }`
+                }
               >
                 About
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>

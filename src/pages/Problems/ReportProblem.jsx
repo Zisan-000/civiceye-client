@@ -9,6 +9,7 @@ import {
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { AuthContext } from "../../provider/AuthProvider";
+import toast from "react-hot-toast";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -17,7 +18,6 @@ L.Icon.Default.mergeOptions({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
-
 
 const REGIONS = {
   dhaka: {
@@ -70,15 +70,13 @@ const REGIONS = {
   },
 };
 
-
 function MapMover({ center, zoom }) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo(center, zoom, { duration: 1.5 }); 
+    map.flyTo(center, zoom, { duration: 1.5 });
   }, [center, zoom, map]);
   return null;
 }
-
 
 function LocationPicker({ position, setPosition, setMapError, activeRegion }) {
   useMapEvents({
@@ -86,7 +84,6 @@ function LocationPicker({ position, setPosition, setMapError, activeRegion }) {
       const { lat, lng } = e.latlng;
       const bounds = activeRegion.bounds;
 
-      
       if (
         lat <= bounds.north &&
         lat >= bounds.south &&
@@ -111,13 +108,13 @@ export default function ReportProblem() {
   const [position, setPosition] = useState(null);
   const [mapError, setMapError] = useState("");
   const [description, setDescription] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   const { user, dbUser, refreshDbUser, loading } = use(AuthContext);
   console.log("Current User in ReportProblem:", user);
   console.log("DB User Trust Score:", dbUser?.trustScore);
   console.log("Loading state:", loading);
 
   const activeRegion = REGIONS[selectedRegionKey];
-
 
   const handleRegionChange = (e) => {
     setSelectedRegionKey(e.target.value);
@@ -127,6 +124,8 @@ export default function ReportProblem() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 1. Initial Validation
     if (dbUser?.trustScore < 30) {
       alert("Submission blocked: Your Trust Score is too low.");
       return;
@@ -136,16 +135,39 @@ export default function ReportProblem() {
       return;
     }
 
-    const complaintData = {
-      userEmail: user?.email,
-      userName: user?.displayName || "Citizen",
-      region: activeRegion.name,
-      description,
-      location: { lat: position.lat, lng: position.lng },
-      category: "general",
-    };
-
     try {
+      let beforeImageUrl = null;
+
+      // 2. Upload to ImgBB FIRST
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("image", selectedFile);
+
+        const imgRes = await fetch(
+          `https://api.imgbb.com/1/upload?key=936b6268b95724d4891ad3e474de132d`,
+          {
+            method: "POST",
+            body: formData,
+          },
+        );
+        const imgData = await imgRes.json();
+        if (imgData.success) {
+          beforeImageUrl = imgData.data.display_url;
+        }
+      }
+
+      // 3. Prepare the data AFTER getting the image URL
+      const complaintData = {
+        userEmail: user?.email,
+        userName: user?.displayName || "Citizen",
+        region: activeRegion.name,
+        description,
+        beforeImage: beforeImageUrl, // Now this has the URL
+        location: { lat: position.lat, lng: position.lng },
+        category: "general",
+      };
+
+      // 4. NOW call the backend with the prepared data
       const response = await fetch("http://localhost:1069/api/complaints", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -154,12 +176,12 @@ export default function ReportProblem() {
 
       const result = await response.json();
 
+      // 5. Handle Responses
       if (response.status === 403) {
-        alert(result.error); // "Trust score below 30" message 
+        toast.error(result.error);
         return;
       }
 
-      // ---  HANDLE DUPLICATES  ---
       if (response.status === 409) {
         const upvote = window.confirm(
           `${result.message}\n\nWould you like to upvote the existing report instead?`,
@@ -170,28 +192,28 @@ export default function ReportProblem() {
         return;
       }
 
-      // --- HANDLE NORMAL SUCCESS ---
       if (result.success) {
         if (refreshDbUser) refreshDbUser(user.email);
-        alert(result.message || "Success! Complaint reported. +5 Trust Score.");
+        toast.success(
+          result.message || "Success! Complaint reported. +5 Trust Score.",
+        );
         setDescription("");
         setPosition(null);
+        setSelectedFile(null);
         window.location.reload();
       } else {
-        
         alert(
-          "Server Error: " +
-            (result.error || "An unexpected error occurred on the server."),
+          "Server Error: " + (result.error || "An unexpected error occurred."),
         );
       }
     } catch (error) {
       console.error("Network Error:", error);
-
       alert(
-        "Could not connect to the backend. Please check if your server is running on port 1069.",
+        "Could not connect to the backend. Ensure your Node.js server is running on port 1069.",
       );
     }
   };
+
   const handleUpvote = async (id) => {
     try {
       const response = await fetch(
@@ -204,8 +226,10 @@ export default function ReportProblem() {
       );
 
       if (response.ok) {
-        alert("Upvoted successfully! This issue now has a higher priority.");
-      
+        toast.success(
+          "Upvoted successfully! This issue now has a higher priority.",
+        );
+
         setPosition(null);
         setDescription("");
       }
@@ -224,7 +248,6 @@ export default function ReportProblem() {
         onSubmit={handleSubmit}
         className="bg-base-200 p-6 rounded-xl shadow-lg"
       >
-   
         <div className="mb-6">
           <label className="label">
             <span className="label-text font-semibold text-lg">
@@ -244,7 +267,6 @@ export default function ReportProblem() {
           </select>
         </div>
 
-  
         <div className="mb-6">
           <label className="label">
             <span className="label-text font-semibold text-lg">
@@ -266,10 +288,9 @@ export default function ReportProblem() {
                 attribution="&copy; OpenStreetMap contributors"
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
- 
+
               <MapMover center={activeRegion.center} zoom={activeRegion.zoom} />
 
-   
               <LocationPicker
                 position={position}
                 setPosition={setPosition}
@@ -293,7 +314,6 @@ export default function ReportProblem() {
           )}
         </div>
 
-
         <div className="mb-6">
           <label className="label">
             <span className="label-text font-semibold text-lg">
@@ -308,6 +328,25 @@ export default function ReportProblem() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
+        </div>
+
+        <div className="form-control w-full my-4">
+          <label className="label">
+            <span className="label-text font-bold">
+              Upload Issue Photo (Before)
+            </span>
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setSelectedFile(e.target.files[0])}
+            className="file-input file-input-bordered file-input-primary w-full"
+          />
+          <label className="label">
+            <span className="label-text-alt opacity-60">
+              Help workers identify the issue quickly.
+            </span>
+          </label>
         </div>
 
         <button

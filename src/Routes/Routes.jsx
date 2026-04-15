@@ -12,6 +12,17 @@ import ProblemList from "../pages/Problems/ProblemList";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import Profile from "../pages/Profile/Profile";
 import About from "../pages/Home/About";
+import ProblemDetails from "../pages/Problems/ProblemDetails";
+
+export const problemDetailsLoader = async ({ params }) => {
+  const response = await fetch(
+    `http://localhost:1069/api/complaints/${params.id}`,
+  );
+  if (!response.ok) {
+    throw new Response("Not Found", { status: 404 });
+  }
+  return response.json();
+};
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +70,11 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <About></About>,
+      },
+      {
+        path: "/problems/details/:id",
+        element: <ProblemDetails />,
+        loader: problemDetailsLoader,
       },
     ],
   },
