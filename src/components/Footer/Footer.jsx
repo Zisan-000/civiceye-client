@@ -49,18 +49,24 @@ const Footer = () => {
           >
             Public Feed
           </Link>
-          <a className="link link-hover hover:text-[#00ADB5] transition-colors">
-            Trust Score System
-          </a>
+          <Link
+            to="/career"
+            className="link link-hover hover:text-[#00ADB5] transition-colors"
+          >
+            Career
+          </Link>
         </nav>
 
         <nav>
           <h6 className="footer-title text-[#00ADB5] opacity-100 font-bold mb-4">
-            Company
+            <Link to="/leaderboard">Leaderboard</Link>
           </h6>
-          <a className="link link-hover hover:text-[#00ADB5] transition-colors mb-2">
-            About Mission
-          </a>
+          <Link
+            to="/dashboard"
+            className="link link-hover hover:text-[#00ADB5] transition-colors mb-2"
+          >
+            Dashboard
+          </Link>
           <a className="link link-hover hover:text-[#00ADB5] transition-colors mb-2">
             Contact Admin
           </a>

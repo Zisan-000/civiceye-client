@@ -13,6 +13,11 @@ import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import Profile from "../pages/Profile/Profile";
 import About from "../pages/Home/About";
 import ProblemDetails from "../pages/Problems/ProblemDetails";
+import InteractiveIssueMap from "../pages/Problems/InteractiveIssueMap";
+import Careers from "../pages/Careers/Careers";
+import WorkerDashboard from "../pages/WorkerDashboard/WorkerDashboard";
+import Leaderboard from "../pages/Leaderboard/Leaderboard";
+import CommunityDashboard from "../pages/CommunityDashboard/CommunityDashboard";
 
 export const problemDetailsLoader = async ({ params }) => {
   const response = await fetch(
@@ -73,8 +78,40 @@ export const router = createBrowserRouter([
       },
       {
         path: "/problems/details/:id",
-        element: <ProblemDetails />,
+        element: (
+          <PrivateRoute>
+            <ProblemDetails />
+          </PrivateRoute>
+        ),
         loader: problemDetailsLoader,
+      },
+      {
+        path: "/interactivemap",
+        element: <InteractiveIssueMap></InteractiveIssueMap>,
+      },
+      {
+        path: "/career",
+        element: (
+          <PrivateRoute>
+            <Careers></Careers>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <PrivateRoute>
+            <WorkerDashboard></WorkerDashboard>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/leaderboard",
+        element: <Leaderboard></Leaderboard>,
+      },
+      {
+        path: "/communitydashboard",
+        element: <CommunityDashboard></CommunityDashboard>,
       },
     ],
   },

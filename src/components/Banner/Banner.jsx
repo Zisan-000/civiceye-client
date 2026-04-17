@@ -1,6 +1,7 @@
 import React from "react";
 import CountUp from "react-countup";
 import { Link } from "react-router";
+import Leaderboard from "../../pages/Leaderboard/Leaderboard";
 
 const Banner = () => {
   return (
@@ -110,6 +111,8 @@ const Banner = () => {
             </div>
           </div>
         </section>
+
+        <Leaderboard></Leaderboard>
 
         {/* ================= SECTION 2: HOW IT WORKS ================= */}
         <section className="max-w-7xl mx-auto px-6 py-24">

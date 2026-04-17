@@ -109,6 +109,7 @@ export default function ReportProblem() {
   const [mapError, setMapError] = useState("");
   const [description, setDescription] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [category, setCategory] = useState("");
   const { user, dbUser, refreshDbUser, loading } = use(AuthContext);
   console.log("Current User in ReportProblem:", user);
   console.log("DB User Trust Score:", dbUser?.trustScore);
@@ -124,7 +125,7 @@ export default function ReportProblem() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setCategory("");
     // 1. Initial Validation
     if (dbUser?.trustScore < 30) {
       alert("Submission blocked: Your Trust Score is too low.");
@@ -164,7 +165,7 @@ export default function ReportProblem() {
         description,
         beforeImage: beforeImageUrl, // Now this has the URL
         location: { lat: position.lat, lng: position.lng },
-        category: "general",
+        category: category,
       };
 
       // 4. NOW call the backend with the prepared data
@@ -317,7 +318,35 @@ export default function ReportProblem() {
         <div className="mb-6">
           <label className="label">
             <span className="label-text font-semibold text-lg">
-              3. Describe the Issue
+              3. Select Issue Category
+            </span>
+          </label>
+          <select
+            className="select select-bordered select-lg w-full text-base bg-base-100"
+            onChange={(e) => {
+              setCategory(e.target.value);
+            }}
+            value={category}
+            required
+          >
+            <option value="" disabled>
+              Select a category...
+            </option>
+            <option value="Fire Hazard">🔥 Fire Hazard</option>
+            <option value="Environment">🌳 Environment</option>
+            <option value="General">📝 General</option>
+            <option value="water">💧 Water & Plumbing</option>
+            <option value="noise">🔊 Noise Complaint</option>
+            <option value="road">🚧 Road & Pothole</option>
+            <option value="waste">🗑️ Garbage & Waste</option>
+            <option value="electrical">⚡ Electrical & Streetlight</option>
+          </select>
+        </div>
+
+        <div className="mb-6">
+          <label className="label">
+            <span className="label-text font-semibold text-lg">
+              4. Describe the Issue
             </span>
           </label>
           <textarea

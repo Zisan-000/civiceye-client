@@ -7,11 +7,25 @@ export default function ProblemList() {
   const { user } = use(AuthContext);
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredProblems = problems.filter((problem) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      problem.userEmail?.toLowerCase().includes(query) ||
+      problem.category?.toLowerCase().includes(query)
+    );
+  });
 
   const ADMIN_EMAILS = [
     "ak01739394811@gmail.com",
     "jannatul.ferdous17@g.bracu.ac.bd",
   ];
+
+  const handleDownloadReport = () => {
+    // This triggers a direct file download in the browser
+    window.location.href = "http://localhost:1069/api/admin/generate-report";
+  };
 
   const isAdmin = ADMIN_EMAILS.includes(user?.email);
 
@@ -233,18 +247,18 @@ export default function ProblemList() {
   };
 
   const [sortType, setSortType] = useState("urgency");
-  const sortedProblems = [...problems].sort((a, b) => {
-    if (a.status === "Fake" && b.status !== "Fake") return 1;
-    if (a.status !== "Fake" && b.status === "Fake") return -1;
-    if (sortType === "urgency")
-      return (b.urgencyScore || 0) - (a.urgencyScore || 0);
-    if (sortType === "popularity") return (b.upvotes || 0) - (a.upvotes || 0);
-    if (sortType === "date")
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    if (sortType === "status")
-      return (STATUS_ORDER[a.status] || 99) - (STATUS_ORDER[b.status] || 99);
-    return 0;
-  });
+  // const sortedProblems = [...problems].sort((a, b) => {
+  //   if (a.status === "Fake" && b.status !== "Fake") return 1;
+  //   if (a.status !== "Fake" && b.status === "Fake") return -1;
+  //   if (sortType === "urgency")
+  //     return (b.urgencyScore || 0) - (a.urgencyScore || 0);
+  //   if (sortType === "popularity") return (b.upvotes || 0) - (a.upvotes || 0);
+  //   if (sortType === "date")
+  //     return new Date(b.createdAt) - new Date(a.createdAt);
+  //   if (sortType === "status")
+  //     return (STATUS_ORDER[a.status] || 99) - (STATUS_ORDER[b.status] || 99);
+  //   return 0;
+  // });
 
   const handleMarkFake = async (id, reporterEmail) => {
     if (
@@ -299,18 +313,62 @@ export default function ProblemList() {
           {problems.length} Reports Found
         </div>
       </div>
-      <div className="flex justify-end mb-4 gap-2 items-center">
-        <span className="text-sm font-semibold">Sort By:</span>
-        <select
-          className="select select-bordered select-sm w-40"
-          value={sortType}
-          onChange={(e) => setSortType(e.target.value)}
+      <div className="flex justify-between my-10">
+        <button
+          onClick={handleDownloadReport}
+          className="btn btn-dash rounded-2xl font-black uppercase italic shadow-lg"
         >
-          <option value="urgency">🚨 Urgency </option>
-          <option value="popularity">🔥 Popularity (Most Upvotes)</option>
-          <option value="date">📅 Date (Newest First)</option>
-          <option value="status">🚦 Status Workflow</option>
-        </select>
+          Download Monthly PDF Report
+        </button>
+        <div className="flex justify-end mb-4 gap-2 items-center">
+          <span className="text-sm font-semibold">Sort By:</span>
+          <select
+            className="select select-bordered select-sm w-40"
+            value={sortType}
+            onChange={(e) => setSortType(e.target.value)}
+          >
+            <option value="urgency">🚨 Urgency </option>
+            <option value="popularity">🔥 Popularity (Most Upvotes)</option>
+            <option value="date">📅 Date (Newest First)</option>
+            <option value="status">🚦 Status Workflow</option>
+          </select>
+        </div>
+      </div>
+      {/* search bar */}
+      <div className="max-w-4xl mx-auto mb-12 px-4">
+        <div className="relative group">
+          {/* Magnifying Glass Icon */}
+          <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+            <svg
+              className="w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="3"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+
+          <input
+            type="text"
+            placeholder="Search by user email or issue category (e.g. Fire Hazard)..."
+            className="w-full pl-16 pr-8 py-6 bg-white/80 backdrop-blur-md rounded-[30px] border-2 border-transparent focus:border-primary/20 focus:bg-white shadow-xl outline-none transition-all font-bold text-slate-700 placeholder:text-slate-400 placeholder:font-medium"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+
+          {/* Search Count Badge */}
+          <div className="absolute inset-y-4 right-4 flex items-center">
+            <span className="bg-slate-100 text-slate-400 px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest">
+              {filteredProblems.length} Results
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className="overflow-x-auto shadow-xl rounded-xl border border-base-300">
@@ -327,7 +385,7 @@ export default function ProblemList() {
             </tr>
           </thead>
           <tbody>
-            {sortedProblems.map((prob) => (
+            {filteredProblems.map((prob) => (
               <tr
                 key={prob._id}
                 className={`hover transition-all ${

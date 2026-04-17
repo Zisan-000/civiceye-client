@@ -186,7 +186,7 @@ const Navbar = () => {
             </li>
 
             {/* --- PROBLEMS DROPDOWN --- */}
-            <li className="dropdown dropdown-bottom relative">
+            <li className="dropdown dropdown-bottom relative z-10">
               <div
                 tabIndex={0}
                 role="button"
@@ -208,7 +208,7 @@ const Navbar = () => {
                   <NavLink
                     to="/problems/report"
                     className={({ isActive }) =>
-                      `rounded-xl font-medium py-3 ${
+                      `rounded-xl font-medium py-3 z-10 ${
                         isActive
                           ? "text-[#00ADB5] bg-[#00ADB5]/10"
                           : "hover:bg-[#00ADB5]/10 hover:text-[#00ADB5]"
@@ -222,7 +222,7 @@ const Navbar = () => {
                   <NavLink
                     to="/problems/categorize"
                     className={({ isActive }) =>
-                      `rounded-xl font-medium py-3 ${
+                      `rounded-xl font-medium py-3 z-10 ${
                         isActive
                           ? "text-[#00ADB5] bg-[#00ADB5]/10"
                           : "hover:bg-[#00ADB5]/10 hover:text-[#00ADB5]"
@@ -247,6 +247,36 @@ const Navbar = () => {
                   </NavLink>
                 </li>
               </ul>
+            </li>
+            {/* Interactive Map */}
+            <li>
+              <NavLink
+                to="/interactivemap"
+                className={({ isActive }) =>
+                  `font-semibold rounded-full px-4 transition-all ${
+                    isActive
+                      ? "text-[#00ADB5] bg-[#00ADB5]/10 shadow-sm"
+                      : "text-[#393E46] bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10"
+                  }`
+                }
+              >
+                Map
+              </NavLink>
+            </li>
+            {/* Community Dashboard */}
+            <li>
+              <NavLink
+                to="/communitydashboard"
+                className={({ isActive }) =>
+                  `font-semibold rounded-full px-4 transition-all ${
+                    isActive
+                      ? "text-[#00ADB5] bg-[#00ADB5]/10 shadow-sm"
+                      : "text-[#393E46] bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10"
+                  }`
+                }
+              >
+                Community
+              </NavLink>
             </li>
 
             {/* --- ABOUT LINK --- */}
