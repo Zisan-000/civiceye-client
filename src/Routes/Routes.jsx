@@ -18,6 +18,7 @@ import Careers from "../pages/Careers/Careers";
 import WorkerDashboard from "../pages/WorkerDashboard/WorkerDashboard";
 import Leaderboard from "../pages/Leaderboard/Leaderboard";
 import CommunityDashboard from "../pages/CommunityDashboard/CommunityDashboard";
+import CommunityFeed from "../pages/CommunityDashboard/CommunityFeed";
 
 export const problemDetailsLoader = async ({ params }) => {
   const response = await fetch(
@@ -111,7 +112,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/communitydashboard",
-        element: <CommunityDashboard></CommunityDashboard>,
+        element: (
+          <PrivateRoute>
+            <CommunityDashboard></CommunityDashboard>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/feed",
+        element: (
+          <PrivateRoute>
+            <CommunityFeed></CommunityFeed>
+          </PrivateRoute>
+        ),
       },
     ],
   },

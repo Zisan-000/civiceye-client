@@ -278,6 +278,21 @@ const Navbar = () => {
                 Community
               </NavLink>
             </li>
+            {/* Feed */}
+            <li>
+              <NavLink
+                to="/feed"
+                className={({ isActive }) =>
+                  `font-semibold rounded-full px-4 transition-all ${
+                    isActive
+                      ? "text-[#00ADB5] bg-[#00ADB5]/10 shadow-sm"
+                      : "text-[#393E46] bg-gray-300 hover:text-[#00ADB5] hover:bg-[#00ADB5]/10"
+                  }`
+                }
+              >
+                Posts
+              </NavLink>
+            </li>
 
             {/* --- ABOUT LINK --- */}
             <li>
