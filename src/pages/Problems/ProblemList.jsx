@@ -2,6 +2,7 @@ import { use, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import toast from "react-hot-toast";
 import { Link } from "react-router";
+import { Helmet } from "react-helmet";
 
 export default function ProblemList() {
   const { user } = use(AuthContext);
@@ -333,20 +334,23 @@ export default function ProblemList() {
 
   return (
     <div className="max-w-7xl mx-auto p-6 mt-10">
+      <Helmet>
+        <title>Problem List || CivicEye</title>
+      </Helmet>
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Community Issues Log</h1>
         <div className="badge badge-primary p-4">
           {problems.length} Reports Found
         </div>
       </div>
-      <div className="flex justify-between my-10">
+      <div className="flex flex-col justify-between items-center gap-2 my-10 lg:flex-row">
         <button
           onClick={handleDownloadReport}
-          className="btn btn-dash rounded-2xl font-black uppercase italic shadow-lg"
+          className="btn btn-dash rounded-2xl font-black uppercase italic shadow-lg lg:w-72 lg:h-20"
         >
           Download Monthly PDF Report
         </button>
-        <div className="flex justify-end mb-4 gap-2 items-center">
+        <div className="flex justify-end mb-4 gap-2 items-center ">
           <span className="text-sm font-semibold">Sort By:</span>
           <select
             className="select select-bordered select-sm w-40"

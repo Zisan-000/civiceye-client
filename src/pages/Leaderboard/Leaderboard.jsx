@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 
 const Leaderboard = () => {
   const [helpers, setHelpers] = useState([]);
@@ -13,7 +14,10 @@ const Leaderboard = () => {
   const theRest = helpers.slice(3);
 
   return (
-    <div className=" bg-indigo-100 py-20 px-4 rounded-2xl">
+    <div className=" bg-indigo-100 bg-linear-to-t from-indigo-100 to-white py-20 px-4 rounded-2xl mb-2">
+      <Helmet>
+        <title>Home || CivicEye</title>
+      </Helmet>
       <div className="max-w-5xl mx-auto">
         <header className="text-center mb-16">
           <h1 className="text-6xl font-black uppercase italic tracking-tighter text-slate-900">
@@ -61,40 +65,43 @@ const Leaderboard = () => {
         </div>
 
         {/* --- THE LIST (Rank 4+) --- */}
-        <div className="bg-white rounded-[40px] shadow-2xl overflow-hidden border border-base-300">
-          <div className="bg-white/30 rounded-[40px] shadow-inner overflow-hidden border border-white/50">
+        <div className="bg-white rounded-[30px] md:rounded-[40px] shadow-2xl overflow-hidden border border-base-300">
+          {/* The Inner container - reduced padding on mobile */}
+          <div className="bg-white/30 rounded-[30px] md:rounded-[40px] shadow-inner overflow-hidden border border-white/50">
             {theRest.map((user, index) => (
               <div
                 key={user._id}
-                className="group relative flex items-center justify-between p-6 transition-all duration-300 hover:bg-white hover:shadow-[0_0_30px_rgba(0,0,0,0.05)] border-b border-white last:border-0"
+                className="group relative flex items-center justify-between p-4 md:p-6 transition-all duration-300 hover:bg-white hover:shadow-[0_0_30px_rgba(0,0,0,0.05)] border-b border-slate-50 last:border-0"
               >
-                {/* Visual Rank Indicator */}
-                <div className="flex items-center gap-8">
-                  <span className="text-2xl font-black italic text-slate-400/30 group-hover:text-primary transition-colors w-10">
+                {/* Left Side: Rank, Avatar, Name */}
+                <div className="flex items-center gap-3 md:gap-8">
+                  {/* Rank: smaller text and width on mobile */}
+                  <span className="text-lg md:text-2xl font-black italic text-slate-400/30 group-hover:text-primary transition-colors w-6 md:w-10">
                     {index + 4}
                   </span>
 
-                  {/* Avatar */}
+                  {/* Avatar: shrunken on mobile */}
                   <div className="avatar placeholder">
-                    <div className="bg-slate-200 text-slate-500 rounded-2xl w-14 h-14 transition-transform group-hover:scale-110 flex items-center justify-center">
-                      <span className="text-xl font-bold">
+                    <div className="bg-slate-200 text-slate-500 rounded-xl md:rounded-2xl w-10 h-10 md:w-14 md:h-14 transition-transform group-hover:scale-110 flex items-center justify-center">
+                      <span className="text-sm md:text-xl font-bold">
                         {user.userName[0]}
                       </span>
                     </div>
                   </div>
 
-                  {/* Name & Email */}
-                  <div>
-                    <h3 className="font-black uppercase text-slate-700 tracking-tight group-hover:text-slate-900">
+                  {/* Name & ID */}
+                  <div className="max-w-[120px] sm:max-w-none">
+                    <h3 className="font-black uppercase text-xs md:text-base text-slate-700 tracking-tight group-hover:text-slate-900 truncate sm:whitespace-normal">
                       {user.userName}
                     </h3>
-                    <p className="text-[10px] font-bold opacity-40 lowercase group-hover:opacity-60 transition-opacity">
+                    {/* ID: Hidden on very small screens to prevent overlap */}
+                    <p className="hidden sm:block text-[10px] font-bold opacity-40 lowercase group-hover:opacity-60 transition-opacity">
                       {user._id}
                     </p>
                   </div>
                 </div>
 
-                {/* Badges - Hidden on small screens */}
+                {/* Middle: Badges - Hidden on mobile/tablet (only visible on Large screens) */}
                 <div className="hidden lg:flex gap-2">
                   {user.badges.map((badge) => (
                     <span
@@ -106,12 +113,12 @@ const Leaderboard = () => {
                   ))}
                 </div>
 
-                {/* Points Badge */}
-                <div className="text-right bg-slate-900 group-hover:bg-primary text-white px-7 py-3 rounded-2xl shadow-lg transition-all group-hover:scale-105">
-                  <p className="text-2xl font-black italic leading-none">
+                {/* Right Side: Points - Compact on mobile */}
+                <div className="text-right bg-slate-900 group-hover:bg-primary text-white px-4 md:px-7 py-2 md:py-3 rounded-xl md:rounded-2xl shadow-lg transition-all group-hover:scale-105">
+                  <p className="text-lg md:text-2xl font-black italic leading-none">
                     {user.totalUpvotes}
                   </p>
-                  <p className="text-[9px] font-black uppercase opacity-60 tracking-widest">
+                  <p className="text-[8px] md:text-[9px] font-black uppercase opacity-60 tracking-widest">
                     Pts
                   </p>
                 </div>

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 
 import toast from "react-hot-toast";
 import { AuthContext } from "../../provider/AuthProvider";
+import { Helmet } from "react-helmet";
 
 const Careers = () => {
   const { user } = useContext(AuthContext);
@@ -46,6 +47,9 @@ const Careers = () => {
   return (
     // Added flex and min-h-screen to ensure perfect vertical and horizontal centering
     <div className="min-h-screen bg-base-200 flex items-center justify-center py-10 px-4">
+      <Helmet>
+        <title>Career || CivicEye</title>
+      </Helmet>
       <div className="max-w-3xl w-full bg-white rounded-[40px] shadow-2xl overflow-hidden p-6 md:p-12 border-8 border-white">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-black uppercase italic tracking-tighter text-primary leading-tight">

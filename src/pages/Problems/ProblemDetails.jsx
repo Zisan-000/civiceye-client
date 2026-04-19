@@ -6,6 +6,7 @@ import {
 import { useLoaderData, useNavigate } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet";
 
 const ProblemDetails = () => {
   const { user } = useContext(AuthContext);
@@ -163,6 +164,9 @@ const ProblemDetails = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 my-10 bg-base-100 shadow-2xl rounded-3xl border border-base-200">
+      <Helmet>
+        <title>Details || CivicEye</title>
+      </Helmet>
       <button
         onClick={() => navigate(-1)}
         className="btn btn-sm btn-ghost mb-6"

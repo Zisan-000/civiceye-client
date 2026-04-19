@@ -19,6 +19,9 @@ import WorkerDashboard from "../pages/WorkerDashboard/WorkerDashboard";
 import Leaderboard from "../pages/Leaderboard/Leaderboard";
 import CommunityDashboard from "../pages/CommunityDashboard/CommunityDashboard";
 import CommunityFeed from "../pages/CommunityDashboard/CommunityFeed";
+import Loading from "../components/Loading/Loading";
+import { Suspense } from "react";
+import { Helmet } from "react-helmet";
 
 export const problemDetailsLoader = async ({ params }) => {
   const response = await fetch(
@@ -35,11 +38,14 @@ export const router = createBrowserRouter([
     path: "/",
     Component: Root,
     errorElement: <ErrorPage></ErrorPage>,
+    hydrateFallbackElement: <Loading />,
+
     children: [
       {
         index: true,
         path: "/",
-        Component: Home,
+        element: <Home></Home>,
+        hydrateFallbackElement: <Loading></Loading>,
       },
       {
         path: "/problems/report",
@@ -122,7 +128,15 @@ export const router = createBrowserRouter([
         path: "/feed",
         element: <CommunityFeed></CommunityFeed>,
       },
+      {
+        path: "/loading",
+        Component: Loading,
+      },
     ],
+  },
+  {
+    path: "/*",
+    element: <ErrorPage></ErrorPage>,
   },
   {
     path: "/auth",
@@ -135,6 +149,7 @@ export const router = createBrowserRouter([
       {
         path: "/auth/register",
         element: <Register></Register>,
+        HydrateFallback: Loading,
       },
     ],
   },

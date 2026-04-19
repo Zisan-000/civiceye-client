@@ -1,6 +1,8 @@
 import React, { use } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { Helmet } from "react-helmet";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -46,16 +48,24 @@ const Login = () => {
   };
   return (
     <div>
-      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-gray-900 to-black px-4 my-4">
-        <div className="w-full max-w-5xl grid lg:grid-cols-2 gap-10 items-center">
+      <Helmet>
+        <title>Login || CivicEye</title>
+      </Helmet>
+      <div className="min-h-screen flex items-center justify-around bg-linear-to-br from-cyan-100 via-indigo-100 to-white px-4 ">
+        <div className="w-full max-w-5xl grid lg:grid-cols-2 gap-20 items-center">
           {/* Left Content */}
-          <div className="text-white space-y-6 text-center lg:text-left">
+          <div className="text-blue-500 space-y-6 text-center lg:text-left">
             <h1 className="text-5xl font-extrabold leading-tight">
               Welcome Back 👋
             </h1>
-            <p className="text-gray-300 text-lg">
+            <DotLottieReact
+              src="https://lottie.host/f464c052-9de8-4c52-b2e9-79f7a9be4482/2sJwNbMQlP.lottie"
+              loop
+              autoplay
+            />
+            <p className="text-gray-500 text-lg">
               Log in to{" "}
-              <span className="font-semibold text-white">CivicEye</span> and
+              <span className="font-semibold text-blue-400">CivicEye</span> and
               help improve your community. Report issues, stay informed, and be
               part of positive change.
             </p>
@@ -68,7 +78,7 @@ const Login = () => {
           </div>
 
           {/* Login Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-8">
+          <div className="backdrop-blur-xl bg-indigo-200 rounded-2xl shadow-2xl p-8">
             <h2 className="text-2xl font-semibold text-white mb-6 text-center">
               Login to your account
             </h2>
@@ -80,7 +90,7 @@ const Login = () => {
                   name="email"
                   type="email"
                   required
-                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-white rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
+                  className="peer w-full px-4 pt-5 pb-2 bg-white text-black rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
                   placeholder="Email"
                 />
                 <label className="absolute left-4 top-2 text-sm text-gray-400 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-2 peer-focus:text-sm peer-focus:text-indigo-400">
@@ -94,7 +104,7 @@ const Login = () => {
                   name="password"
                   type="password"
                   required
-                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-white rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
+                  className="peer w-full px-4 pt-5 pb-2 bg-white text-black rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
                   placeholder="Password"
                 />
                 <label className="absolute left-4 top-2 text-sm text-gray-400 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-2 peer-focus:text-sm peer-focus:text-indigo-400">
@@ -104,7 +114,7 @@ const Login = () => {
 
               {/* Forgot */}
               <div className="text-right">
-                <a className="text-sm text-indigo-400 hover:underline cursor-pointer">
+                <a className="text-sm text-black hover:underline cursor-pointer">
                   Forgot password?
                 </a>
               </div>

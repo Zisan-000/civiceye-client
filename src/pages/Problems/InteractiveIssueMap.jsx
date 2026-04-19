@@ -7,6 +7,7 @@ import L from "leaflet";
 // Fix for default marker icons not showing up correctly in React
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import { Helmet } from "react-helmet";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -121,6 +122,9 @@ export default function InteractiveIssueMap() {
 
   return (
     <div className="relative w-full max-w-7xl mx-auto px-4 py-10">
+      <Helmet>
+        <title>Map || CivicEye</title>
+      </Helmet>
       {/* Title Section */}
       <div className="flex justify-between items-end mb-6">
         <div>

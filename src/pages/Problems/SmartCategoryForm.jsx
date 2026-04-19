@@ -1,6 +1,7 @@
 import { use, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet";
 
 export default function SmartCategoryForm() {
   const { user, dbUser, refreshDbUser } = use(AuthContext);
@@ -149,6 +150,9 @@ export default function SmartCategoryForm() {
   return (
     <>
       <div className="max-w-3xl mx-auto p-6 mt-10">
+        <Helmet>
+          <title>Smart Category || CivicEye</title>
+        </Helmet>
         <h1 className="text-3xl font-bold mb-2 text-center text-primary">
           Smart Issue Categorization
         </h1>

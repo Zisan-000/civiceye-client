@@ -1,9 +1,14 @@
 import React from "react";
 import { ShieldCheck, Zap, MapPin, Cpu } from "lucide-react";
+import { Link } from "react-router";
+import { Helmet } from "react-helmet";
 
 const About = () => {
   return (
     <div className="min-h-screen bg-base-100 p-6 lg:p-12">
+      <Helmet>
+        <title>About || CivicEye</title>
+      </Helmet>
       {/* --- 1. HERO SECTION --- */}
       <section className="hero bg-linear-to-br from-primary/10 to-base-200 rounded-3xl overflow-hidden mb-16 shadow-inner">
         <div className="hero-content text-center py-16 lg:py-24">
@@ -21,12 +26,16 @@ const About = () => {
               technology.
             </p>
             <div className="flex justify-center gap-4">
-              <button className="btn btn-primary btn-wide shadow-lg">
-                Report an Issue
-              </button>
-              <button className="btn btn-outline btn-wide">
-                View Live Map
-              </button>
+              <Link to="/problems/report">
+                <button className="btn btn-primary btn-wide shadow-lg">
+                  Report an Issue
+                </button>
+              </Link>
+              <Link to="/interactivemap">
+                <button className="btn btn-outline btn-wide">
+                  View Live Map
+                </button>
+              </Link>
             </div>
           </div>
         </div>

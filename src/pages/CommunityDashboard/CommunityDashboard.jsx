@@ -7,6 +7,8 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import Loading from "../../components/Loading/Loading";
+import { Helmet } from "react-helmet";
 
 const COLORS = [
   "#3b82f6",
@@ -29,12 +31,15 @@ const CommunityDashboard = () => {
   if (!stats)
     return (
       <div className="p-20 text-center font-black italic uppercase animate-pulse">
-        Loading Analytics...
+        <Loading></Loading>
       </div>
     );
 
   return (
     <div className=" bg-base-200 p-8 my-10 rounded-2xl">
+      <Helmet>
+        <title>Dashboard || CivicEye</title>
+      </Helmet>
       <div className="max-w-6xl mx-auto mt-10">
         <header className="mb-12 text-center lg:text-left">
           <h1 className="text-5xl font-black uppercase italic tracking-tighter text-slate-900">

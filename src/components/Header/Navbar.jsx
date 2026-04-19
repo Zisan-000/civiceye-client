@@ -139,6 +139,52 @@ const Navbar = () => {
                   </li>
                 </ul>
               </li>
+
+              {/* Interactive Map */}
+              <li>
+                <NavLink
+                  to="/interactivemap"
+                  className={({ isActive }) =>
+                    `font-semibold rounded-full px-4 transition-all ${
+                      isActive
+                        ? "text-[#00ADB5] bg-[#00ADB5]/10 shadow-sm"
+                        : "text-[#393E46] "
+                    }`
+                  }
+                >
+                  Map
+                </NavLink>
+              </li>
+              {/* Community Dashboard */}
+              <li>
+                <NavLink
+                  to="/communitydashboard"
+                  className={({ isActive }) =>
+                    `font-semibold rounded-full px-4 transition-all ${
+                      isActive
+                        ? "text-[#00ADB5] bg-[#00ADB5]/10 shadow-sm"
+                        : "text-[#393E46]"
+                    }`
+                  }
+                >
+                  Community
+                </NavLink>
+              </li>
+              {/* Feed */}
+              <li>
+                <NavLink
+                  to="/feed"
+                  className={({ isActive }) =>
+                    `font-semibold rounded-full px-4 transition-all ${
+                      isActive
+                        ? "text-[#00ADB5] bg-[#00ADB5]/10 shadow-sm"
+                        : "text-[#393E46]"
+                    }`
+                  }
+                >
+                  Posts
+                </NavLink>
+              </li>
               <li>
                 <NavLink
                   to="/about"
@@ -460,6 +506,68 @@ const Navbar = () => {
           <button>close</button>
         </form>
       </dialog>
+
+      {/* Announcement Bar */}
+      <div className="w-full mb-5 bg-gray-900  py-3 overflow-hidden z-40 relative group">
+        {/* The Animation Container */}
+        <div
+          className="flex items-center gap-24 whitespace-nowrap"
+          style={{
+            display: "inline-flex",
+            animation: "marquee 40s linear infinite",
+            paddingLeft: "100%",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.animationPlayState = "paused")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.animationPlayState = "running")
+          }
+        >
+          {/* Item 1 - Breaking News Style */}
+          <div className="flex items-center gap-3">
+            <span className="bg-red-600 text-[10px] font-black px-2 py-0.5 rounded-sm text-white animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.5)]">
+              LIVE
+            </span>
+            <span className="text-slate-200 text-sm font-semibold tracking-tight">
+              Heavy rain alert: 4 new waterlogging reports in Dhanmondi.
+            </span>
+          </div>
+
+          {/* Item 2 - Gamification/Trust Score */}
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 bg-[#00ADB5] rounded-full shadow-[0_0_10px_#00ADB5] animate-pulse"></div>
+            <span className="text-[#00ADB5] text-[11px] font-black uppercase tracking-[0.2em]">
+              Trust Leader:
+            </span>
+            <span className="text-slate-100 text-sm font-medium">
+              User{" "}
+              <span className="text-white border-b border-teal-500/50">
+                ak017****
+              </span>{" "}
+              just reached 850 points!
+            </span>
+          </div>
+
+          {/* Item 3 - Educational/Tips */}
+          <div className="flex items-center gap-3">
+            <span className="text-teal-900 font-light text-xl">/</span>
+            <span className="text-slate-400 text-sm italic font-medium">
+              CivicEye prevents duplicates within 10m of existing reports.
+            </span>
+          </div>
+
+          {/* Item 4 - System Update */}
+          <div className="flex items-center gap-3">
+            <span className="bg-[#2d333b] text-[#00ADB5] text-[10px] font-black px-2 py-1 rounded border border-[#00ADB5]/20 uppercase">
+              Update
+            </span>
+            <span className="text-slate-200 text-sm font-medium">
+              New "Smart Category" forms added for Waste Management.
+            </span>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

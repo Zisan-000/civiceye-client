@@ -7,63 +7,6 @@ const Banner = () => {
   return (
     <>
       <div className="min-h-screen bg-base-100 font-sans pb-10">
-        {/* Announcement Bar */}
-        <div className="w-full rounded-3xl mt-3 bg-gray-800 border-y border-teal-600 py-2 overflow-hidden  top-16 z-40">
-          {/* The Animation Container */}
-          <div
-            className="flex items-center gap-16 whitespace-nowrap"
-            style={{
-              display: "inline-flex",
-              animation: "marquee 40s linear infinite",
-              paddingLeft: "100%", // Starts from the far right
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.animationPlayState = "paused")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.animationPlayState = "running")
-            }
-          >
-            {/* Item 1 */}
-            <div className="flex items-center gap-2">
-              <span className="bg-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded text-white animate-pulse">
-                LIVE
-              </span>
-              <span className="text-[#EEEEEE] text-sm font-medium">
-                Heavy rain alert: 4 new waterlogging reports in Dhanmondi.
-              </span>
-            </div>
-
-            {/* Item 2 */}
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-[#00ADB5] rounded-full shadow-[0_0_8px_#00ADB5]"></div>
-              <span className="text-[#00ADB5] text-sm font-bold uppercase tracking-widest">
-                Trust Leader:
-              </span>
-              <span className="text-[#EEEEEE] text-sm font-medium">
-                User ak017**** just reached 850 points!
-              </span>
-            </div>
-
-            {/* Item 3 */}
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500 text-lg">|</span>
-              <span className="text-[#EEEEEE] text-sm opacity-80 italic">
-                CivicEye prevents duplicates within 10m of existing reports.
-              </span>
-            </div>
-
-            {/* Item 4 */}
-            <div className="flex items-center gap-2">
-              <span className="bg-[#393E46] text-[#00ADB5] text-[10px] font-bold px-2 py-0.5 rounded border border-[#00ADB5]/30">
-                UPDATE
-              </span>
-              <span className="text-[#EEEEEE] text-sm font-medium">
-                New "Smart Category" forms added for Waste Management.
-              </span>
-            </div>
-          </div>
-        </div>
         {/* ================= SECTION 1: HERO ================= */}
         <section
           className="relative bg-linear-to-br from-gray-500 via-teal-600 to-teal-800 text-white overflow-hidden py-24 lg:py-32 rounded-3xl shadow-2xl mt-2"
@@ -103,7 +46,7 @@ const Banner = () => {
                 Report an Issue Now
               </Link>
               <Link
-                to="/problems/list"
+                to="/interactivemap"
                 className="btn btn-outline text-white hover:bg-white hover:text-indigo-600 border-white btn-lg backdrop-blur-sm"
               >
                 View Community Map

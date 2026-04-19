@@ -5,10 +5,10 @@ import { Outlet } from "react-router";
 const AuthLayout = () => {
   return (
     <>
-      <header className="max-w-7xl mx-auto">
+      <header className="">
         <Navbar></Navbar>
       </header>
-      <main className="max-w-7xl mx-auto">
+      <main className="">
         <Outlet></Outlet>
       </main>
     </>

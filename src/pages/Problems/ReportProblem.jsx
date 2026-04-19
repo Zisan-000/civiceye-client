@@ -10,6 +10,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { AuthContext } from "../../provider/AuthProvider";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -241,6 +242,9 @@ export default function ReportProblem() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 mt-10">
+      <Helmet>
+        <title>Report || CivicEye</title>
+      </Helmet>
       <h1 className="text-3xl font-bold mb-6 text-center">
         Report a Community Issue
       </h1>

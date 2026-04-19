@@ -7,12 +7,15 @@ import { router } from "./Routes/Routes.jsx";
 import AuthProvider from "./provider/AuthProvider.jsx";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Toaster } from "react-hot-toast";
+import { HelmetProvider } from "react-helmet-async";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <Toaster position="top-right" />
-      <RouterProvider router={router} />
+      <HelmetProvider>
+        <Toaster position="top-right" />
+        <RouterProvider router={router} />
+      </HelmetProvider>
     </AuthProvider>
   </StrictMode>,
 );

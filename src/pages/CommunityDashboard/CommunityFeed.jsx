@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react"; // Changed 'use'
 import toast from "react-hot-toast";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link } from "react-router";
+import { Helmet } from "react-helmet";
 
 const CommunityFeed = () => {
   // 1. Standard way to access context
@@ -96,6 +97,9 @@ const CommunityFeed = () => {
 
   return (
     <div className="min-h-screen  py-12 px-4">
+      <Helmet>
+        <title>Feed || CivicEye</title>
+      </Helmet>
       <div className="max-w-2xl mx-auto">
         {/* CREATE POST AREA - Only show if user is logged in */}
         {user ? (

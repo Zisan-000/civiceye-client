@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
+import { Helmet } from "react-helmet";
 
 const WorkerDashboard = () => {
   const [workers, setWorkers] = useState([]);
@@ -116,6 +117,9 @@ const WorkerDashboard = () => {
 
   return (
     <div className="min-h-screen bg-base-200 p-8">
+      <Helmet>
+        <title>Worker Dashboard || CivicEye</title>
+      </Helmet>
       <h1 className="text-4xl font-black uppercase italic mb-10 text-center text-primary">
         Worker Management Center
       </h1>

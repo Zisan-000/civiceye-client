@@ -1,6 +1,7 @@
 import React, { use } from "react";
 import { Link } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
+import { Helmet } from "react-helmet";
 
 const Register = () => {
   const { createUser, setUser } = use(AuthContext);
@@ -29,28 +30,14 @@ const Register = () => {
   };
   return (
     <div>
-      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-gray-900 to-black px-4 my-4">
+      <Helmet>
+        <title>Registration || CivicEye</title>
+      </Helmet>
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-purple-100 via-blue-100 to-white px-4 ">
         <div className="w-full max-w-5xl grid lg:grid-cols-2 gap-10 items-center">
           {/* Left Content */}
-          <div className="text-white space-y-6 text-center lg:text-left">
-            <h1 className="text-5xl font-extrabold leading-tight">
-              Join CivicEye 🚀
-            </h1>
-            <p className="text-gray-300 text-lg">
-              Create an account to report civic issues, stay updated, and
-              contribute to building a better community.
-            </p>
-            <p className="text-sm text-gray-400">
-              Already have an account?{" "}
-              <span className="text-indigo-400 cursor-pointer hover:underline">
-                <Link to="/auth/login">Login here</Link>
-              </span>
-            </p>
-          </div>
-
-          {/* Register Card */}
           <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-8">
-            <h2 className="text-2xl font-semibold text-white mb-6 text-center">
+            <h2 className="text-2xl font-semibold text-black mb-6 text-center">
               Create your account
             </h2>
 
@@ -61,7 +48,7 @@ const Register = () => {
                   name="name"
                   type="text"
                   required
-                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-white rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
+                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-black rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
                   placeholder="Full Name"
                 />
                 <label className="absolute left-4 top-2 text-sm text-gray-400 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-2 peer-focus:text-sm peer-focus:text-indigo-400">
@@ -75,7 +62,7 @@ const Register = () => {
                   name="email"
                   type="email"
                   required
-                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-white rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
+                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-black rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
                   placeholder="Email"
                 />
                 <label className="absolute left-4 top-2 text-sm text-gray-400 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-2 peer-focus:text-sm peer-focus:text-indigo-400">
@@ -89,7 +76,7 @@ const Register = () => {
                   name="number"
                   type="tel"
                   required
-                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-white rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
+                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-black rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
                   placeholder="Phone Number"
                 />
                 <label className="absolute left-4 top-2 text-sm text-gray-400 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-2 peer-focus:text-sm peer-focus:text-indigo-400">
@@ -103,7 +90,7 @@ const Register = () => {
                   name="password"
                   type="password"
                   required
-                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-white rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
+                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-black rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
                   placeholder="Password"
                 />
                 <label className="absolute left-4 top-2 text-sm text-gray-400 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-2 peer-focus:text-sm peer-focus:text-indigo-400">
@@ -117,7 +104,7 @@ const Register = () => {
                   name="confirm"
                   type="password"
                   required
-                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-white rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
+                  className="peer w-full px-4 pt-5 pb-2 bg-white/10 text-black rounded-lg outline-none border border-gray-600 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 placeholder-transparent"
                   placeholder="Confirm Password"
                 />
                 <label className="absolute left-4 top-2 text-sm text-gray-400 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-2 peer-focus:text-sm peer-focus:text-indigo-400">
@@ -133,6 +120,24 @@ const Register = () => {
                 Register
               </button>
             </form>
+          </div>
+
+          {/* Register Card */}
+
+          <div className="text-blue-500 space-y-6 text-center lg:text-left">
+            <h1 className="text-5xl font-extrabold leading-tight">
+              Join CivicEye 🚀
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Create an account to report civic issues, stay updated, and
+              contribute to building a better community.
+            </p>
+            <p className="text-sm text-gray-400">
+              Already have an account?{" "}
+              <span className="text-indigo-400 cursor-pointer hover:underline">
+                <Link to="/auth/login">Login here</Link>
+              </span>
+            </p>
           </div>
         </div>
       </div>
