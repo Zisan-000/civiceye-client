@@ -90,7 +90,7 @@ const Leaderboard = () => {
                   </div>
 
                   {/* Name & ID */}
-                  <div className="max-w-[120px] sm:max-w-none">
+                  <div className="max-w-30 sm:max-w-none">
                     <h3 className="font-black uppercase text-xs md:text-base text-slate-700 tracking-tight group-hover:text-slate-900 truncate sm:whitespace-normal">
                       {user.userName}
                     </h3>

@@ -15,6 +15,7 @@
     "@lottiefiles/lottie-player": "^2.0.12",
     "@tailwindcss/vite": "^4.2.1",
     "firebase": "^12.10.0",
+    "framer-motion": "^12.38.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.7.0",
     "react": "^19.2.0",
