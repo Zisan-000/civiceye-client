@@ -6,11 +6,14 @@ import { Toaster } from "react-hot-toast";
 
 const Root = () => {
   return (
-    <div className="max-w-7xl mx-auto">
+    <div>
       <Toaster position="top-right" reverseOrder={false} />
-      <Navbar></Navbar>
-
-      <Outlet></Outlet>
+      <div>
+        <Navbar></Navbar>
+      </div>
+      <div className="max-w-7xl mx-auto">
+        <Outlet></Outlet>
+      </div>
 
       <Footer></Footer>
     </div>

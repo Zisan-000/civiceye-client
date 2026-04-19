@@ -17,6 +17,15 @@ export default function ProblemList() {
     );
   });
 
+  const searchResults = problems.filter((problem) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      problem.userEmail?.toLowerCase().includes(query) ||
+      problem.category?.toLowerCase().includes(query) ||
+      problem.description?.toLowerCase().includes(query) // Added description for better search
+    );
+  });
+
   const ADMIN_EMAILS = [
     "ak01739394811@gmail.com",
     "jannatul.ferdous17@g.bracu.ac.bd",
@@ -240,25 +249,42 @@ export default function ProblemList() {
 
   const STATUS_ORDER = {
     Open: 1,
+    Pending: 1,
     "In Review": 2,
     "Work in Progress": 3,
+    "In-Progress": 3,
     Resolved: 4,
     Closed: 5,
+    Fake: 6,
   };
 
   const [sortType, setSortType] = useState("urgency");
-  // const sortedProblems = [...problems].sort((a, b) => {
-  //   if (a.status === "Fake" && b.status !== "Fake") return 1;
-  //   if (a.status !== "Fake" && b.status === "Fake") return -1;
-  //   if (sortType === "urgency")
-  //     return (b.urgencyScore || 0) - (a.urgencyScore || 0);
-  //   if (sortType === "popularity") return (b.upvotes || 0) - (a.upvotes || 0);
-  //   if (sortType === "date")
-  //     return new Date(b.createdAt) - new Date(a.createdAt);
-  //   if (sortType === "status")
-  //     return (STATUS_ORDER[a.status] || 99) - (STATUS_ORDER[b.status] || 99);
-  //   return 0;
-  // });
+
+  const finalDisplayProblems = [...searchResults].sort((a, b) => {
+    if (a.status === "Fake" && b.status !== "Fake") return 1;
+    if (a.status !== "Fake" && b.status === "Fake") return -1;
+
+    switch (sortType) {
+      case "urgency":
+        return (b.urgencyScore || 0) - (a.urgencyScore || 0);
+
+      case "popularity":
+        return (b.upvotes || 0) - (a.upvotes || 0);
+
+      case "date":
+        return new Date(b.createdAt) - new Date(a.createdAt);
+
+      case "status": {
+        // <--- Added opening brace
+        const orderA = STATUS_ORDER[a.status] || 99;
+        const orderB = STATUS_ORDER[b.status] || 99;
+        return orderA - orderB;
+      } // <--- Added closing brace
+
+      default:
+        return 0;
+    }
+  });
 
   const handleMarkFake = async (id, reporterEmail) => {
     if (
@@ -385,7 +411,7 @@ export default function ProblemList() {
             </tr>
           </thead>
           <tbody>
-            {filteredProblems.map((prob) => (
+            {finalDisplayProblems.map((prob) => (
               <tr
                 key={prob._id}
                 className={`hover transition-all ${

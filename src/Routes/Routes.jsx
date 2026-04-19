@@ -120,11 +120,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/feed",
-        element: (
-          <PrivateRoute>
-            <CommunityFeed></CommunityFeed>
-          </PrivateRoute>
-        ),
+        element: <CommunityFeed></CommunityFeed>,
       },
     ],
   },
