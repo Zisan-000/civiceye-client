@@ -170,11 +170,14 @@ export default function ReportProblem() {
       };
 
       // 4. NOW call the backend with the prepared data
-      const response = await fetch("http://localhost:1069/api/complaints", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(complaintData),
-      });
+      const response = await fetch(
+        "https://civiceye-server.vercel.app/api/complaints",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(complaintData),
+        },
+      );
 
       const result = await response.json();
 
@@ -219,7 +222,7 @@ export default function ReportProblem() {
   const handleUpvote = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:1069/api/complaints/upvote/${id}`,
+        `https://civiceye-server.vercel.app/api/complaints/upvote/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

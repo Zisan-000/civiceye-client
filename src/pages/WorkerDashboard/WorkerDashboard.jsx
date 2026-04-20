@@ -31,7 +31,7 @@ const WorkerDashboard = () => {
 
   useEffect(() => {
     // 1. Fetch ALL workers
-    fetch("http://localhost:1069/api/workers")
+    fetch("https://civiceye-server.vercel.app/api/workers")
       .then((res) => res.json())
       .then((data) => {
         setWorkers(data);
@@ -39,7 +39,7 @@ const WorkerDashboard = () => {
       .catch((err) => console.error("Worker fetch error:", err));
 
     // 2. Fetch ALL Open Complaints
-    fetch("http://localhost:1069/api/complaints")
+    fetch("https://civiceye-server.vercel.app/api/complaints")
       .then((res) => res.json())
       .then((data) => {
         const open = data.filter((task) => task.status === "Open");
@@ -52,7 +52,7 @@ const WorkerDashboard = () => {
     const loadingToast = toast.loading("Verifying worker...");
     try {
       const response = await fetch(
-        `http://localhost:1069/api/workers/verify/${workerId}`,
+        `https://civiceye-server.vercel.app/api/workers/verify/${workerId}`,
         {
           method: "PATCH",
         },
@@ -89,16 +89,19 @@ const WorkerDashboard = () => {
   const handleAssign = async (taskId) => {
     const loadingToast = toast.loading("Assigning task...");
     try {
-      const response = await fetch("http://localhost:1069/api/workers/assign", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          taskId,
-          workerEmail: selectedWorker.email,
-          workerRegion: selectedWorker.region,
-          // Removed regional constraint for the assignment payload
-        }),
-      });
+      const response = await fetch(
+        "https://civiceye-server.vercel.app/api/workers/assign",
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            taskId,
+            workerEmail: selectedWorker.email,
+            workerRegion: selectedWorker.region,
+            // Removed regional constraint for the assignment payload
+          }),
+        },
+      );
 
       const result = await response.json();
       toast.dismiss(loadingToast);
@@ -125,7 +128,7 @@ const WorkerDashboard = () => {
       </h1>
 
       {/* SECTION 1: PENDING APPLICATIONS (Hidden if none) */}
-      {workers.filter((w) => w.status === "Pending").length > 0 && (
+      {workers?.filter((w) => w.status === "Pending").length > 0 && (
         <div className="mb-16">
           <h2 className="text-2xl font-black uppercase italic mb-6 text-warning flex items-center gap-3">
             <span className="w-8 h-8 rounded-full bg-warning text-white flex items-center justify-center text-sm">

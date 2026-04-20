@@ -34,7 +34,8 @@ export default function ProblemList() {
 
   const handleDownloadReport = () => {
     // This triggers a direct file download in the browser
-    window.location.href = "http://localhost:1069/api/admin/generate-report";
+    window.location.href =
+      "https://civiceye-server.vercel.app/api/admin/generate-report";
   };
 
   const isAdmin = ADMIN_EMAILS.includes(user?.email);
@@ -82,7 +83,7 @@ export default function ProblemList() {
 
     try {
       const response = await fetch(
-        `http://localhost:1069/api/complaints/${endpoint}/${problemId}`,
+        `https://civiceye-server.vercel.app/api/complaints/${endpoint}/${problemId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -141,7 +142,7 @@ export default function ProblemList() {
 
     try {
       const response = await fetch(
-        `http://localhost:1069/api/complaints/status/${id}`,
+        `https://civiceye-server.vercel.app/api/complaints/status/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -170,7 +171,7 @@ export default function ProblemList() {
   const handleDelete = async (id) => {
     if (window.confirm("Delete this report?")) {
       const response = await fetch(
-        `http://localhost:1069/api/complaints/${id}?email=${user.email}`,
+        `https://civiceye-server.vercel.app/api/complaints/${id}?email=${user.email}`,
         { method: "DELETE" },
       );
       if (response.ok) {
@@ -188,7 +189,7 @@ export default function ProblemList() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:1069/api/complaints")
+    fetch("https://civiceye-server.vercel.app/api/complaints")
       .then((res) => res.json())
       .then((data) => {
         const liveScoredProblems = data.map((prob) => {
@@ -297,7 +298,7 @@ export default function ProblemList() {
 
     try {
       const response = await fetch(
-        `http://localhost:1069/api/complaints/mark-fake/${id}`,
+        `https://civiceye-server.vercel.app/api/complaints/mark-fake/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

@@ -15,7 +15,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:1069/api/user-stats/${user.email}`)
+      fetch(`https://civiceye-server.vercel.app/api/user-stats/${user.email}`)
         .then((res) => res.json())
         .then((data) => setStats(data))
         .catch((err) => console.error("Error fetching stats:", err));

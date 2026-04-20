@@ -15,7 +15,7 @@ const Navbar = () => {
   useEffect(() => {
     if (user?.email) {
       const fetchScore = () => {
-        fetch(`http://localhost:1069/api/users/${user.email}`)
+        fetch(`https://civiceye-server.vercel.app/api/users/${user.email}`)
           .then((res) => res.json())
           .then((data) => setDbUser(data))
           .catch((err) => console.error("Error fetching user score:", err));

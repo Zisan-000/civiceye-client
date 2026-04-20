@@ -24,7 +24,7 @@ const CommunityDashboard = () => {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:1069/api/admin/community-stats")
+    fetch("https://civiceye-server.vercel.app/api/admin/community-stats")
       .then((res) => res.json())
       .then((data) => setStats(data));
   }, []);

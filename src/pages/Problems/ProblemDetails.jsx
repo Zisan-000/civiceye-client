@@ -29,7 +29,9 @@ const ProblemDetails = () => {
 
   useEffect(() => {
     if (problem?._id) {
-      fetch(`http://localhost:1069/api/workers/assigned-to/${problem._id}`)
+      fetch(
+        `https://civiceye-server.vercel.app/api/workers/assigned-to/${problem._id}`,
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.found) {
@@ -45,7 +47,7 @@ const ProblemDetails = () => {
     const checkRole = async () => {
       try {
         const res = await fetch(
-          `http://localhost:1069/api/workers/check/${user?.email}`,
+          `https://civiceye-server.vercel.app/api/workers/check/${user?.email}`,
         );
         const data = await res.json();
         if (isMounted) {
@@ -114,7 +116,7 @@ const ProblemDetails = () => {
           : { afterImage: imageUrl };
 
       const res = await fetch(
-        `http://localhost:1069/api/complaints/update-images/${problem._id}`,
+        `https://civiceye-server.vercel.app/api/complaints/update-images/${problem._id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -139,7 +141,7 @@ const ProblemDetails = () => {
     const loading = toast.loading(`Moving to ${nextStatus}...`);
     try {
       const res = await fetch(
-        `http://localhost:1069/api/complaints/update-status/${problem._id}`,
+        `https://civiceye-server.vercel.app/api/complaints/update-status/${problem._id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

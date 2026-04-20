@@ -23,11 +23,14 @@ const Careers = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:1069/api/workers/apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(workerData),
-      });
+      const response = await fetch(
+        "https://civiceye-server.vercel.app/api/workers/apply",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(workerData),
+        },
+      );
 
       const result = await response.json();
 

@@ -13,7 +13,7 @@ const CommunityFeed = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchPosts = () => {
-    fetch("http://localhost:1069/api/community/posts")
+    fetch("https://civiceye-server.vercel.app/api/community/posts")
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch((err) => console.error("Error fetching posts:", err));
@@ -36,7 +36,7 @@ const CommunityFeed = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:1069/api/community/posts",
+        "https://civiceye-server.vercel.app/api/community/posts",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -68,7 +68,7 @@ const CommunityFeed = () => {
     if (!user?.email) return toast.error("Log in to like posts!");
 
     const response = await fetch(
-      `http://localhost:1069/api/community/posts/like/${postId}`,
+      `https://civiceye-server.vercel.app/api/community/posts/like/${postId}`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

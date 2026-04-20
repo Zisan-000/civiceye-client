@@ -19,7 +19,7 @@ export default function SmartCategoryForm() {
   const handleUpvote = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:1069/api/complaints/upvote/${id}`,
+        `https://civiceye-server.vercel.app/api/complaints/upvote/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -91,11 +91,14 @@ export default function SmartCategoryForm() {
       };
 
       // 4. Send to Backend
-      const response = await fetch("http://localhost:1069/api/complaints", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://civiceye-server.vercel.app/api/complaints",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        },
+      );
 
       const result = await response.json();
 

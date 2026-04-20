@@ -96,7 +96,7 @@ export default function InteractiveIssueMap() {
   const [activeIssues, setActiveIssues] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:1069/api/complaints")
+    fetch("https://civiceye-server.vercel.app/api/complaints")
       .then((res) => res.json())
       .then((data) => {
         // THE SELECTIVE FILTER:

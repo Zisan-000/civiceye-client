@@ -5,7 +5,7 @@ const Leaderboard = () => {
   const [helpers, setHelpers] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:1069/api/leaderboard")
+    fetch("https://civiceye-server.vercel.app/api/leaderboard")
       .then((res) => res.json())
       .then((data) => setHelpers(data));
   }, []);

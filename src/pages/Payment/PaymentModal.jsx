@@ -11,7 +11,7 @@ export default function PaymentModal({ isOpen, onClose }) {
   const handleManualSubmit = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost:1069/payment", {
+    fetch("https://civiceye-server.vercel.app/payment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

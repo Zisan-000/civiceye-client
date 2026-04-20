@@ -24,7 +24,9 @@ const AuthProvider = ({ children }) => {
     }
 
     try {
-      const res = await fetch(`http://localhost:1069/api/users/${email}`);
+      const res = await fetch(
+        `https://civiceye-server.vercel.app/api/users/${email}`,
+      );
 
       if (!res.ok) {
         return;

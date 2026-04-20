@@ -25,7 +25,7 @@ import { Helmet } from "react-helmet";
 
 export const problemDetailsLoader = async ({ params }) => {
   const response = await fetch(
-    `http://localhost:1069/api/complaints/${params.id}`,
+    `https://civiceye-server.vercel.app/api/complaints/${params.id}`,
   );
   if (!response.ok) {
     throw new Response("Not Found", { status: 404 });

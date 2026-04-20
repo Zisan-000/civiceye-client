@@ -19,7 +19,6 @@ const Root = () => {
       <div className="max-w-7xl mx-auto">
         <main>{isLoading ? <Loading /> : <Outlet />}</main>
       </div>
-
       <Footer></Footer>
     </div>
   );
