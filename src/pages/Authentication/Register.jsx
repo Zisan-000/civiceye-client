@@ -2,6 +2,7 @@ import React, { use } from "react";
 import { Link } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Helmet } from "react-helmet";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const Register = () => {
   const { createUser, setUser } = use(AuthContext);
@@ -34,7 +35,7 @@ const Register = () => {
         <title>Registration || CivicEye</title>
       </Helmet>
       <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-purple-100 via-blue-100 to-white px-4 ">
-        <div className="w-full max-w-5xl grid lg:grid-cols-2 gap-10 items-center">
+        <div className="w-full max-w-5xl grid lg:grid-cols-2 gap-20 items-center">
           {/* Left Content */}
           <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-8">
             <h2 className="text-2xl font-semibold text-black mb-6 text-center">
@@ -128,6 +129,11 @@ const Register = () => {
             <h1 className="text-5xl font-extrabold leading-tight">
               Join CivicEye 🚀
             </h1>
+            <DotLottieReact
+              src="https://lottie.host/f464c052-9de8-4c52-b2e9-79f7a9be4482/2sJwNbMQlP.lottie"
+              loop
+              autoplay
+            />
             <p className="text-gray-600 text-lg">
               Create an account to report civic issues, stay updated, and
               contribute to building a better community.
