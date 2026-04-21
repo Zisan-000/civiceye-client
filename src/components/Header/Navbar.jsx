@@ -508,7 +508,7 @@ const Navbar = () => {
       </dialog>
 
       {/* Announcement Bar */}
-      <div className="w-full mb-5 bg-gray-900  py-3 overflow-hidden z-40 relative group">
+      <div className="w-full mb-5 bg-gray-900 py-2 overflow-hidden z-40 relative group">
         {/* The Animation Container */}
         <div
           className="flex items-center gap-24 whitespace-nowrap"
