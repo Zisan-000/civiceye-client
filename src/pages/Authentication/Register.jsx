@@ -34,7 +34,7 @@ const Register = () => {
       <Helmet>
         <title>Registration || CivicEye</title>
       </Helmet>
-      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-purple-100 via-blue-100 to-white px-4 ">
+      <div className="min-h-screen flex items-center justify-center my-10 bg-linear-to-br from-purple-100 via-blue-100 to-white px-4 ">
         <div className="w-full max-w-5xl grid lg:grid-cols-2 gap-20 items-center">
           {/* Left Content */}
           <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-8">
