@@ -8,25 +8,25 @@ const Register = () => {
   const { createUser, setUser } = use(AuthContext);
   const handleRegister = (e) => {
     e.preventDefault();
-    // console.log(e.target);
+    // //console.log(e.target);
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
     const number = form.number.value;
     const password = form.password.value;
     const confirm = form.confirm.value;
-    console.log({ name, email, number, password, confirm });
+    //console.log({ name, email, number, password, confirm });
     createUser(email, password)
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
         setUser(user);
-        console.log(user);
+        //console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        //console.log(errorCode, errorMessage);
       });
   };
   return (

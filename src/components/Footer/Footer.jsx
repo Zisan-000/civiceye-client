@@ -10,7 +10,11 @@ const Footer = () => {
         <aside className="max-w-xs">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-10 h-10 bg-[#00ADB5] rounded-xl flex items-center justify-center shadow-[0_0_15px_#00ADB555]">
-              <span className="text-white font-black text-xl">C</span>
+              <img
+                src="/favicon.svg"
+                alt="Civic Eye Logo"
+                className="w-8 h-8"
+              />
             </div>
             <p className="text-2xl font-extrabold tracking-tighter">
               Civic<span className="text-[#00ADB5]">Eye</span>

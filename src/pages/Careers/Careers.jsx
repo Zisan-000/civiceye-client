@@ -55,7 +55,7 @@ const Careers = () => {
       </Helmet>
       <div className="max-w-3xl w-full bg-white rounded-[40px] shadow-2xl overflow-hidden p-6 md:p-12 border-8 border-white">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-black uppercase italic tracking-tighter text-primary leading-tight">
+          <h1 className="text-4xl font-black uppercase italic tracking-tighter text-teal-600 leading-tight">
             Join CivicEye Team
           </h1>
           <p className="text-gray-500 font-bold text-sm mt-2">
@@ -166,7 +166,7 @@ const Careers = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`btn btn-primary btn-block rounded-2xl text-lg font-black uppercase italic shadow-lg hover:shadow-primary/50 transition-all ${loading ? "loading" : ""}`}
+            className={`btn bg-teal-600 text-white btn-block rounded-2xl text-lg  uppercase italic shadow-lg hover:shadow-teal-600/50 transition-all ${loading ? "loading" : ""}`}
           >
             {loading ? "Processing..." : "Submit Application"}
           </button>

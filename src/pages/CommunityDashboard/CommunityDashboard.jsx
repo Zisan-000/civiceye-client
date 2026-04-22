@@ -44,7 +44,7 @@ const CommunityDashboard = () => {
       <div className="max-w-6xl mx-auto mt-10">
         <header className="mb-12 text-center lg:text-left">
           <h1 className="text-5xl font-black uppercase italic tracking-tighter text-slate-900">
-            Community <span className="text-primary">Impact</span>
+            Community <span className="text-teal-600">Impact</span>
           </h1>
           <p className="font-bold opacity-50 uppercase tracking-widest mt-2">
             Analytical insights for society management
@@ -171,7 +171,7 @@ const CommunityDashboard = () => {
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <div className="bg-primary text-white p-8 rounded-[40px] shadow-xl">
+            <div className="bg-teal-600 text-white p-8 rounded-[40px] shadow-xl">
               <p className="text-[10px] font-black uppercase opacity-50 tracking-widest mb-1">
                 Active Now
               </p>

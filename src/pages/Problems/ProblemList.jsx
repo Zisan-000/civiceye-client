@@ -3,6 +3,11 @@ import { AuthContext } from "../../provider/AuthProvider";
 import toast from "react-hot-toast";
 import { Link } from "react-router";
 import { Helmet } from "react-helmet";
+import { TbUrgent } from "react-icons/tb";
+import { ScrollSmoother, ScrollTrigger } from "gsap/all";
+import gsap from "gsap";
+
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 export default function ProblemList() {
   const { user } = use(AuthContext);
@@ -17,6 +22,31 @@ export default function ProblemList() {
       problem.category?.toLowerCase().includes(query)
     );
   });
+  useEffect(() => {
+    // Initialize Smoother
+    const smoother = ScrollSmoother.create({
+      wrapper: "#smooth-wrapper",
+      content: "#smooth-content",
+      smooth: 2, // Seconds it takes to "catch up" to the scroll
+      effects: true, // Allows data-speed and data-lag attributes
+    });
+
+    // Example Banner Parallax effect
+    gsap.to(".banner-image", {
+      scrollTrigger: {
+        trigger: ".banner-section",
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      },
+      y: 200, // Moves image slower than scroll
+      ease: "none",
+    });
+
+    return () => {
+      smoother.kill(); // Clean up on unmount
+    };
+  }, []);
 
   const searchResults = problems.filter((problem) => {
     const query = searchQuery.toLowerCase();
@@ -231,8 +261,10 @@ export default function ProblemList() {
     const s = status?.toLowerCase();
     switch (s) {
       case "open":
+        return "bg-red-700 text-white animate-pulse";
       case "pending":
-        return "badge-warning";
+        return "badge-warning opacity-50 text-black font-bold";
+
       case "in review":
         return "badge-info opacity-80";
       case "work in progress":
@@ -329,7 +361,7 @@ export default function ProblemList() {
   if (loading)
     return (
       <div className="flex justify-center mt-20">
-        <span className="loading loading-bars loading-lg text-primary"></span>
+        <span className="loading loading-bars loading-lg text-teal-600"></span>
       </div>
     );
 
@@ -338,9 +370,9 @@ export default function ProblemList() {
       <Helmet>
         <title>Problem List || CivicEye</title>
       </Helmet>
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center my-8">
         <h1 className="text-3xl font-bold">Community Issues Log</h1>
-        <div className="badge badge-primary p-4">
+        <div className="badge bg-teal-600 text-white p-4 animate-pulse-gentle">
           {problems.length} Reports Found
         </div>
       </div>
@@ -371,7 +403,7 @@ export default function ProblemList() {
           {/* Magnifying Glass Icon */}
           <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
             <svg
-              className="w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors"
+              className="w-5 h-5 text-slate-400 group-focus-within:text-teal-600 transition-colors"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -388,7 +420,7 @@ export default function ProblemList() {
           <input
             type="text"
             placeholder="Search by user email or issue category (e.g. Fire Hazard)..."
-            className="w-full pl-16 pr-8 py-6 bg-white/80 backdrop-blur-md rounded-[30px] border-2 border-transparent focus:border-primary/20 focus:bg-white shadow-xl outline-none transition-all font-bold text-slate-700 placeholder:text-slate-400 placeholder:font-medium"
+            className="w-full pl-16 pr-8 py-6 bg-white/80 backdrop-blur-md rounded-[30px] border-2 border-transparent focus:border-primary/20 focus:bg-white shadow-xl outline-none transition-all font-bold text-slate-700 placeholder:text-teal-800 placeholder:font-medium"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -428,7 +460,7 @@ export default function ProblemList() {
                 <td>
                   <div className="flex flex-col">
                     <div
-                      className={`${prob.status === "Fake" ? "" : "font-bold text-primary"}`}
+                      className={`${prob.status === "Fake" ? "" : "font-bold text-teal-600"}`}
                     >
                       {prob.userName || "Anonymous"}
                     </div>
@@ -478,7 +510,7 @@ export default function ProblemList() {
                           ([key, value]) => (
                             <div
                               key={key}
-                              className="badge badge-info badge-sm text-xs"
+                              className="badge bg-teal-200 w-auto text-xs"
                             >
                               <span className="font-bold lowercase opacity-70">
                                 {key}:
@@ -569,8 +601,9 @@ export default function ProblemList() {
                 <td>
                   <div className=" flex gap-2 join-vertical  ">
                     {prob.urgencyScore && (
-                      <div className="badge badge-error gap-2 font-black text-white shadow-md px-4 py-4 text-xs uppercase tracking-wider">
-                        🚨 Score: {prob.urgencyScore}/100
+                      <div className="badge bg-red-200 gap-2 font-black text-black shadow-md px-4 py-4 text-xs uppercase tracking-wider animate-pulse-slow ">
+                        <TbUrgent className=" text-2xl text-red-600" /> Score:{" "}
+                        {prob.urgencyScore}/100
                       </div>
                     )}
                     <span

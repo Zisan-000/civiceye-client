@@ -1,11 +1,66 @@
 @import "tailwindcss";
 @plugin "daisyui";
+@tailwind utilities;
+
+html,
+body {
+  overflow-x: hidden;
+}
 
 @keyframes marquee {
-  0% {
+  from {
     transform: translateX(0);
   }
-  100% {
-    transform: translateX(-100%);
+  to {
+    transform: translateX(-50%);
   }
+}
+
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 20s linear infinite;
+  will-change: transform;
+}
+
+body {
+  font-family: "Mozilla Text", serif;
+  background: linear-gradient(-45deg, #e0f2fe, #043228, #f0f6f4, #0ebf9f);
+  background-image: radial-gradient(#00adb5 1px, transparent 1px);
+  background-size: 30px 30px;
+  background-position:
+    0 0,
+    10px 10px;
+  animation: smoothGradient 50s ease-in-out infinite;
+}
+
+@keyframes smoothGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Rotate whole circle */
+@keyframes rotate-circle {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate-circle {
+  animation: rotate-circle 20s linear infinite;
+}
+
+/* Keep icons straight */
+.keep-upright {
+  animation: rotate-circle 20s linear infinite reverse;
 }

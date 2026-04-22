@@ -112,9 +112,9 @@ export default function ReportProblem() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [category, setCategory] = useState("");
   const { user, dbUser, refreshDbUser, loading } = use(AuthContext);
-  console.log("Current User in ReportProblem:", user);
-  console.log("DB User Trust Score:", dbUser?.trustScore);
-  console.log("Loading state:", loading);
+  //console.log("Current User in ReportProblem:", user);
+  //console.log("DB User Trust Score:", dbUser?.trustScore);
+  //console.log("Loading state:", loading);
 
   const activeRegion = REGIONS[selectedRegionKey];
 
@@ -248,7 +248,7 @@ export default function ReportProblem() {
       <Helmet>
         <title>Report || CivicEye</title>
       </Helmet>
-      <h1 className="text-3xl font-bold mb-6 text-center">
+      <h1 className="text-3xl font-bold my-6 text-center">
         Report a Community Issue
       </h1>
 
@@ -285,7 +285,7 @@ export default function ReportProblem() {
             Tap anywhere inside {activeRegion.name} to set a pin.
           </p>
 
-          <div className="h-80 w-full rounded-lg overflow-hidden border-2 border-primary z-0">
+          <div className="h-80 w-full rounded-lg overflow-hidden border-2 border-primary z-0 relative">
             <MapContainer
               center={activeRegion.center}
               zoom={activeRegion.zoom}
@@ -376,7 +376,7 @@ export default function ReportProblem() {
             type="file"
             accept="image/*"
             onChange={(e) => setSelectedFile(e.target.files[0])}
-            className="file-input file-input-bordered file-input-primary w-full"
+            className="file-input file-input-bordered file-input-neutral w-full"
           />
           <label className="label">
             <span className="label-text-alt opacity-60">

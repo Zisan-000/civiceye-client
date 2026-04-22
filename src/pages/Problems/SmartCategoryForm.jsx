@@ -156,7 +156,7 @@ export default function SmartCategoryForm() {
         <Helmet>
           <title>Smart Category || CivicEye</title>
         </Helmet>
-        <h1 className="text-3xl font-bold mb-2 text-center text-primary">
+        <h1 className="text-3xl font-bold mt-10 mb-3 text-center text-teal-600">
           Smart Issue Categorization
         </h1>
         <p className="text-center text-gray-500 mb-8">
@@ -199,7 +199,7 @@ export default function SmartCategoryForm() {
 
           {category && (
             <div className="mb-6 p-5 bg-base-100 rounded-xl border border-primary/20 shadow-sm transition-all duration-300">
-              <h3 className="text-md font-bold text-primary mb-4 border-b pb-2">
+              <h3 className="text-md font-bold text-teal-600 mb-4 border-b pb-2">
                 Specific Details Required
               </h3>
               <div className="space-y-4">
@@ -572,7 +572,7 @@ export default function SmartCategoryForm() {
           <div className="mb-6">
             <label className="label">
               <span className="label-text font-semibold text-lg">
-                2. Specific Location / Address
+                {/* 2. Specific Location / Address */}
               </span>
             </label>
             <textarea
@@ -595,7 +595,7 @@ export default function SmartCategoryForm() {
               type="file"
               accept="image/*"
               onChange={(e) => setSelectedFile(e.target.files[0])}
-              className="file-input file-input-bordered file-input-primary w-full"
+              className="file-input file-input-bordered file-input-neutral w-full"
             />
             <label className="label">
               <span className="label-text-alt opacity-60">

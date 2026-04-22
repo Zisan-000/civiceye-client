@@ -87,7 +87,7 @@ const CommunityFeed = () => {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <span className="loading loading-infinity loading-lg text-primary"></span>
+        <span className="loading loading-infinity loading-lg text-teal-600"></span>
         <h2 className="font-black uppercase italic animate-pulse">
           Checking ID...
         </h2>
@@ -100,13 +100,19 @@ const CommunityFeed = () => {
       <Helmet>
         <title>Feed || CivicEye</title>
       </Helmet>
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl my-10 mx-auto">
+        <h1 className="italic font-bold text-5xl my-2">
+          Community <span className="text-teal-600">Feed</span>
+        </h1>
+        <p className="italic text-gray-500 pl-2 mb-3">
+          Post anything about your community
+        </p>
         {/* CREATE POST AREA - Only show if user is logged in */}
         {user ? (
           <div className="bg-white p-6 rounded-[35px] shadow-xl mb-10 border border-slate-100">
             <form onSubmit={handlePostSubmit}>
               <textarea
-                className="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none focus:ring-2 ring-primary/20 font-bold text-slate-700 placeholder:opacity-40"
+                className="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none focus:ring-2 ring-primary/20 font-bold text-teal-900 placeholder:opacity-50"
                 required
                 placeholder={`What's on your mind, ${user?.displayName?.split(" ")[0]}?`}
                 rows="3"
@@ -114,12 +120,12 @@ const CommunityFeed = () => {
                 onChange={(e) => setContent(e.target.value)}
               />
               <div className="flex justify-between items-center mt-4">
-                <span className="text-[10px] font-black uppercase opacity-30 italic">
+                <span className="text-[10px] font-black uppercase opacity-50 italic">
                   AI Moderation Active
                 </span>
                 <button
                   disabled={loading}
-                  className={`btn btn-primary rounded-2xl px-8 font-black uppercase italic ${loading && "loading"}`}
+                  className={`btn bg-teal-600 text-white rounded-2xl px-8 font-black uppercase italic ${loading && "loading"}`}
                 >
                   {loading ? "Checking" : "Post"}
                 </button>

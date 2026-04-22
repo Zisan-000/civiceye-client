@@ -1,27 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import Loading from "../../components/Loading/Loading";
 
 const Leaderboard = () => {
   const [helpers, setHelpers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://civiceye-server.vercel.app/api/leaderboard")
+    // Use your actual Vercel URL here!
+    const url =
+      import.meta.env.VITE_API_URL || "https://civiceye-server.vercel.app";
+
+    fetch(`${url}/api/leaderboard`)
       .then((res) => res.json())
-      .then((data) => setHelpers(data));
+      .then((data) => {
+        setHelpers(Array.isArray(data) ? data : []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
-  const topThree = helpers.slice(0, 3);
-  const theRest = helpers.slice(3);
+  if (loading) return <Loading></Loading>;
+
+  const safeHelpers = Array.isArray(helpers) ? helpers : [];
+
+  const topThree = safeHelpers.slice(0, 3);
+  const theRest = safeHelpers.slice(3);
 
   return (
-    <div className=" bg-indigo-100 bg-linear-to-t from-indigo-100 to-white py-20 px-4 rounded-2xl mb-2">
+    <div className=" mt-10  py-20 px-4 rounded-2xl mb-2">
       <Helmet>
         <title>Home || CivicEye</title>
       </Helmet>
+
       <div className="max-w-5xl mx-auto">
         <header className="text-center mb-16">
-          <h1 className="text-6xl font-black uppercase italic tracking-tighter text-slate-900">
-            Community <span className="text-primary">Titans</span>
+          <h1 className="text-6xl font-bold uppercase italic font-mozilla-text text-slate-900">
+            Community <span className="text-teal-900 ">Titans</span>
           </h1>
           <p className="font-bold opacity-60 uppercase tracking-widest mt-2">
             Recognizing our most active citizens
@@ -35,9 +50,9 @@ const Leaderboard = () => {
             <PodiumCard
               user={topThree[1]}
               rank={2}
-              color="bg-slate-300"
+              color="bg-zinc-600"
               height="h-[380px]"
-              shadow="shadow-gray-700"
+              shadow="shadow-teal-800"
             />
           )}
 
@@ -46,9 +61,9 @@ const Leaderboard = () => {
             <PodiumCard
               user={topThree[0]}
               rank={1}
-              color="bg-yellow-400"
+              color="bg-yellow-500"
               height="h-[450px]"
-              shadow="shadow-yellow-200"
+              shadow="shadow-teal-200"
             />
           )}
 
@@ -57,9 +72,9 @@ const Leaderboard = () => {
             <PodiumCard
               user={topThree[2]}
               rank={3}
-              color="bg-orange-400"
+              color="bg-yellow-800"
               height="h-[350px]"
-              shadow="shadow-orange-200"
+              shadow="shadow-teal-600"
             />
           )}
         </div>
@@ -76,7 +91,7 @@ const Leaderboard = () => {
                 {/* Left Side: Rank, Avatar, Name */}
                 <div className="flex items-center gap-3 md:gap-8">
                   {/* Rank: smaller text and width on mobile */}
-                  <span className="text-lg md:text-2xl font-black italic text-slate-400/30 group-hover:text-primary transition-colors w-6 md:w-10">
+                  <span className="text-lg md:text-2xl font-mozilla-text italic text-slate-400/30 group-hover:text-teal-600 transition-colors w-6 md:w-10">
                     {index + 4}
                   </span>
 
@@ -91,7 +106,7 @@ const Leaderboard = () => {
 
                   {/* Name & ID */}
                   <div className="max-w-30 sm:max-w-none">
-                    <h3 className="font-black uppercase text-xs md:text-base text-slate-700 tracking-tight group-hover:text-slate-900 truncate sm:whitespace-normal">
+                    <h3 className="font-mozilla-text uppercase text-xs md:text-base text-slate-700 tracking-tight group-hover:text-slate-900 truncate sm:whitespace-normal">
                       {user.userName}
                     </h3>
                     {/* ID: Hidden on very small screens to prevent overlap */}
@@ -106,7 +121,7 @@ const Leaderboard = () => {
                   {user.badges.map((badge) => (
                     <span
                       key={badge}
-                      className="text-[8px] font-black uppercase italic px-3 py-1.5 rounded-full bg-slate-100 text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-colors border border-transparent group-hover:border-primary/20"
+                      className="text-[8px] font-mozilla-text uppercase italic px-3 py-1.5 rounded-full bg-slate-100 text-slate-400 group-hover:bg-teal-600/10 group-hover:text-teal-600 transition-colors border border-transparent group-hover:border-primary/20"
                     >
                       {badge}
                     </span>
@@ -114,11 +129,11 @@ const Leaderboard = () => {
                 </div>
 
                 {/* Right Side: Points - Compact on mobile */}
-                <div className="text-right bg-slate-900 group-hover:bg-primary text-white px-4 md:px-7 py-2 md:py-3 rounded-xl md:rounded-2xl shadow-lg transition-all group-hover:scale-105">
-                  <p className="text-lg md:text-2xl font-black italic leading-none">
+                <div className="text-right bg-slate-900 group-hover:bg-teal-600 text-white px-4 md:px-7 py-2 md:py-3 rounded-xl md:rounded-2xl shadow-lg transition-all group-hover:scale-105">
+                  <p className="text-lg md:text-2xl font-mozilla-text italic leading-none">
                     {user.totalUpvotes}
                   </p>
-                  <p className="text-[8px] md:text-[9px] font-black uppercase opacity-60 tracking-widest">
+                  <p className="text-[8px] md:text-[9px] font-mozilla-text uppercase opacity-60 tracking-widest">
                     Pts
                   </p>
                 </div>
@@ -140,21 +155,21 @@ const PodiumCard = ({ user, rank, color, height }) => (
     <div
       className={`absolute -top-6 w-14 h-14 ${color} rounded-3xl flex items-center justify-center shadow-xl border-4 border-white rotate-12`}
     >
-      <span className="text-2xl font-black italic text-white -rotate-12">
+      <span className="text-2xl font-mozilla-text font-extrabold italic text-white -rotate-12">
         #{rank}
       </span>
     </div>
 
     <div className="avatar placeholder mt-6 mb-4">
       <div className="bg-slate-900 text-white rounded-[30px] w-20 shadow-lg flex justify-center items-center">
-        <span className="text-3xl font-black">{user.userName[0]}</span>
+        <span className="text-3xl font-mozilla-text">{user.userName[0]}</span>
       </div>
     </div>
 
-    <h3 className="font-black uppercase text-xl text-slate-800 text-center leading-none">
+    <h3 className="font-mozilla-text uppercase text-xl text-slate-800 text-center leading-none">
       {user.userName}
     </h3>
-    <p className="text-[12px] mt-2 font-bold text-primary opacity-70 mb-5 lowercase tracking-tighter">
+    <p className="text-[12px] mt-2 font-bold text-teal-600 opacity-70 mb-5 lowercase tracking-tighter">
       {user._id}
     </p>
 
@@ -163,7 +178,7 @@ const PodiumCard = ({ user, rank, color, height }) => (
       {user.badges.map((badge) => (
         <span
           key={badge}
-          className="text-[9px] bg-slate-100 text-slate-600 font-black px-3 py-1.5 rounded-full uppercase tracking-widest border border-slate-200"
+          className="text-[9px] bg-slate-100 text-slate-600 font-mozilla-text px-3 py-1.5 rounded-full uppercase tracking-widest border border-slate-200"
         >
           {badge}
         </span>
@@ -172,10 +187,10 @@ const PodiumCard = ({ user, rank, color, height }) => (
 
     <div className="mt-auto flex items-center gap-2">
       <div className="text-center">
-        <p className="text-4xl font-black italic text-slate-900 leading-none">
+        <p className="text-4xl font-mozilla-text italic text-slate-900 leading-none">
           {user.totalUpvotes}
         </p>
-        <p className="text-[10px] font-black opacity-30 uppercase tracking-[0.2em]">
+        <p className="text-[10px] font-mozilla-text opacity-30 uppercase tracking-[0.2em]">
           Upvotes
         </p>
       </div>

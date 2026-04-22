@@ -9,7 +9,7 @@ const WorkerDashboard = () => {
   const [unassignedTasks, setUnassignedTasks] = useState([]);
   const [selectedWorker, setSelectedWorker] = useState(null);
 
-  console.log(unassignedTasks);
+  //console.log(unassignedTasks);
 
   const { user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ const WorkerDashboard = () => {
       <Helmet>
         <title>Worker Dashboard || CivicEye</title>
       </Helmet>
-      <h1 className="text-4xl font-black uppercase italic mb-10 text-center text-primary">
+      <h1 className="text-4xl font-black uppercase italic mb-10 text-center text-teal-600">
         Worker Management Center
       </h1>
 
@@ -169,7 +169,7 @@ const WorkerDashboard = () => {
 
       {/* SECTION 2: ACTIVE WORKFORCE & ASSIGNMENT */}
       <div>
-        <h2 className="text-2xl font-black uppercase italic mb-6 text-primary">
+        <h2 className="text-2xl font-black uppercase italic mb-6 text-teal-600">
           Verified Workforce
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -216,7 +216,7 @@ const WorkerDashboard = () => {
                           className="border-l-2 border-primary pl-3 py-1"
                         >
                           <div className="flex justify-between items-center">
-                            <p className="text-[11px] font-black uppercase text-primary">
+                            <p className="text-[11px] font-black uppercase text-teal-600">
                               {task.category}
                             </p>
                             <span className="text-[9px] font-bold opacity-50 uppercase">
@@ -262,7 +262,7 @@ const WorkerDashboard = () => {
             Assign Task to {selectedWorker?.name}
           </h3>
 
-          <p className="text-xs font-bold opacity-60 mb-6 uppercase tracking-widest text-primary">
+          <p className="text-xs font-bold opacity-60 mb-6 uppercase tracking-widest text-teal-600">
             Universal Task List (All Regions)
           </p>
 

@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [dbUser, setDbUser] = useState(null);
   const [user, setUser] = useState(null);
-  //   console.log(user);
+  //   //console.log(user);
   const refreshDbUser = async (email) => {
     if (!email) {
       return;
@@ -35,17 +35,17 @@ const AuthProvider = ({ children }) => {
       const data = await res.json();
 
       // 1. Log the entire object to see the structure
-      // console.log("📦 Full Data Object from DB:", data);
+      // //console.log("📦 Full Data Object from DB:", data);
 
       // 2. Check if trustScore exists and what its TYPE is
       if (data && data.trustScore !== undefined) {
-        // console.log("✅ Trust Score Found:", data.trustScore);
-        // console.log("🔢 Type of Trust Score:", typeof data.trustScore);
+        // //console.log("✅ Trust Score Found:", data.trustScore);
+        // //console.log("🔢 Type of Trust Score:", typeof data.trustScore);
       } else {
         // console.warn(
         //   "⚠️ Warning: 'trustScore' property is missing in the returned object!",
         // );
-        // console.log("Keys available in data:", Object.keys(data || {}));
+        // //console.log("Keys available in data:", Object.keys(data || {}));
       }
 
       setDbUser(data);

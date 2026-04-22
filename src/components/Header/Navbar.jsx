@@ -3,15 +3,18 @@ import { Link, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
 import { FaUserCircle } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { FaMapPin } from "react-icons/fa";
+import { PiNotePencil } from "react-icons/pi";
+import { FaListCheck } from "react-icons/fa6";
 
 const Navbar = () => {
   const { user, logout } = use(AuthContext);
   const [dbUser, setDbUser] = useState(null);
   const ADMIN_EMAILS = ["ak01739394811@gmail.com", "your-email@gmail.com"];
   const isAdmin = ADMIN_EMAILS.includes(user?.email);
-  console.log(isAdmin);
+  //console.log(isAdmin);
   const logoutModalRef = useRef(null);
-  // console.log(user);
+  // //console.log(user);
   useEffect(() => {
     if (user?.email) {
       const fetchScore = () => {
@@ -50,7 +53,7 @@ const Navbar = () => {
   };
   return (
     <>
-      <div className="navbar  top-0 z-50 bg-[#EEEEEE]/90 backdrop-blur-md shadow-sm border-b border-gray-200/50 px-4 md:px-8">
+      <div className="navbar fixed  top-0 z-50 bg-[#ffffff]/90 backdrop-blur-md shadow-sm border-b border-gray-200/50 px-4 md:px-8">
         {/* ================= NAVBAR START (Logo & Mobile Menu) ================= */}
         <div className="navbar-start">
           {/* Mobile Menu */}
@@ -207,6 +210,7 @@ const Navbar = () => {
             to="/"
             className="btn btn-ghost text-2xl font-extrabold tracking-tight gap-1 hover:bg-transparent"
           >
+            <img src="/favicon.svg" alt="Civic Eye Logo" className="w-8 h-8" />
             <span className="text-[#222831]">Civic</span>
             <span className="text-[#00ADB5]">Eye</span>
           </Link>
@@ -261,7 +265,7 @@ const Navbar = () => {
                       }`
                     }
                   >
-                    📍 Geo-Tagged Map Report
+                    <FaMapPin className="text-red-600" /> Geo-Tagged Map Report
                   </NavLink>
                 </li>
                 <li>
@@ -275,7 +279,8 @@ const Navbar = () => {
                       }`
                     }
                   >
-                    📝 Smart Category Form
+                    <PiNotePencil className="text-blue-800" /> Smart Category
+                    Form
                   </NavLink>
                 </li>
                 <li>
@@ -289,7 +294,7 @@ const Navbar = () => {
                       }`
                     }
                   >
-                    📋 View All Problems
+                    <FaListCheck className="text-teal-900" /> View All Problems
                   </NavLink>
                 </li>
               </ul>
@@ -435,12 +440,6 @@ const Navbar = () => {
                   </Link>
                 </li>
 
-                <li>
-                  <a className="hover:bg-[#00ADB5]/10 hover:text-[#00ADB5] font-medium rounded-xl py-2.5 px-3">
-                    Settings
-                  </a>
-                </li>
-
                 {/* --- 3. LOGOUT (Styled to match) --- */}
                 <li className="mt-2 pt-1 border-t border-gray-50">
                   <button
@@ -506,68 +505,6 @@ const Navbar = () => {
           <button>close</button>
         </form>
       </dialog>
-
-      {/* Announcement Bar */}
-      <div className="w-full mb-5 bg-gray-900 py-2 overflow-hidden z-40 relative group">
-        {/* The Animation Container */}
-        <div
-          className="flex items-center gap-24 whitespace-nowrap"
-          style={{
-            display: "inline-flex",
-            animation: "marquee 40s linear infinite",
-            paddingLeft: "100%",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.animationPlayState = "paused")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.animationPlayState = "running")
-          }
-        >
-          {/* Item 1 - Breaking News Style */}
-          <div className="flex items-center gap-3">
-            <span className="bg-red-600 text-[10px] font-black px-2 py-0.5 rounded-sm text-white animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.5)]">
-              LIVE
-            </span>
-            <span className="text-slate-200 text-sm font-semibold tracking-tight">
-              Heavy rain alert: 4 new waterlogging reports in Dhanmondi.
-            </span>
-          </div>
-
-          {/* Item 2 - Gamification/Trust Score */}
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-[#00ADB5] rounded-full shadow-[0_0_10px_#00ADB5] animate-pulse"></div>
-            <span className="text-[#00ADB5] text-[11px] font-black uppercase tracking-[0.2em]">
-              Trust Leader:
-            </span>
-            <span className="text-slate-100 text-sm font-medium">
-              User{" "}
-              <span className="text-white border-b border-teal-500/50">
-                ak017****
-              </span>{" "}
-              just reached 850 points!
-            </span>
-          </div>
-
-          {/* Item 3 - Educational/Tips */}
-          <div className="flex items-center gap-3">
-            <span className="text-teal-900 font-light text-xl">/</span>
-            <span className="text-slate-400 text-sm italic font-medium">
-              CivicEye prevents duplicates within 10m of existing reports.
-            </span>
-          </div>
-
-          {/* Item 4 - System Update */}
-          <div className="flex items-center gap-3">
-            <span className="bg-[#2d333b] text-[#00ADB5] text-[10px] font-black px-2 py-1 rounded border border-[#00ADB5]/20 uppercase">
-              Update
-            </span>
-            <span className="text-slate-200 text-sm font-medium">
-              New "Smart Category" forms added for Waste Management.
-            </span>
-          </div>
-        </div>
-      </div>
     </>
   );
 };

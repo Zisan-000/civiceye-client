@@ -7,6 +7,8 @@ import { useLoaderData, useNavigate } from "react-router";
 import { AuthContext } from "../../provider/AuthProvider";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router";
+import { FiClock } from "react-icons/fi";
 
 const ProblemDetails = () => {
   const { user } = useContext(AuthContext);
@@ -18,7 +20,7 @@ const ProblemDetails = () => {
   // NEW STATE FOR DYNAMIC ROLE CHECK
   const [isWorker, setIsWorker] = useState(false);
   const [checkingRole, setCheckingRole] = useState(true);
-  console.log(checkingRole);
+  //console.log(checkingRole);
 
   const ADMIN_EMAILS = [
     "ak01739394811@gmail.com",
@@ -55,7 +57,7 @@ const ProblemDetails = () => {
           setCheckingRole(false);
         }
       } catch (err) {
-        console.log(err);
+        //console.log(err);
         if (isMounted) setCheckingRole(false);
       }
     };
@@ -206,7 +208,7 @@ const ProblemDetails = () => {
             <h2 className="font-bold text-gray-500 text-xs uppercase mb-3 tracking-widest">
               Reporter Contact
             </h2>
-            <p className="font-bold text-primary">
+            <p className="font-bold text-teal-600">
               {problem.userName || "Anonymous User"}
             </p>
             <p className="text-sm opacity-70">{problem.userEmail}</p>
@@ -227,10 +229,10 @@ const ProblemDetails = () => {
               </div>
             </div>
             <div className="stat">
-              <div className="stat-title text-xs uppercase font-bold text-primary">
+              <div className="stat-title text-xs uppercase font-bold text-teal-600">
                 Popularity
               </div>
-              <div className="stat-value text-primary">
+              <div className="stat-value text-teal-600">
                 {problem.upvotes || 0}
               </div>
               <div className="stat-desc">Citizen Verifications [cite: 34]</div>
@@ -273,8 +275,20 @@ const ProblemDetails = () => {
           </div>
         </div>
       ) : (
-        <div className="mt-6 p-4 bg-gray-100 rounded-2xl italic text-gray-500 text-sm">
-          No worker has been assigned to this task yet.
+        <div className="mt-6 p-4 bg-gray-100 rounded-2xl text-gray-500 text-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <span className="italic">
+            No worker has been assigned to this task yet.
+          </span>
+
+          {/* The button only renders if isAdmin is true */}
+          {isAdmin && (
+            <Link
+              to="/dashboard"
+              className="btn btn-sm bg-[#00ADB5] hover:bg-teal-600 text-white border-none normal-case shadow-sm"
+            >
+              Assign workers
+            </Link>
+          )}
         </div>
       )}
 
@@ -283,7 +297,7 @@ const ProblemDetails = () => {
         {/* STEP 1: Upload After Image (Only if not already uploaded) */}
         {(isAdmin || isWorker) && (
           <div className="mt-8 space-y-6 bg-white p-8 rounded-[40px] shadow-xl border border-base-300">
-            <h2 className="text-xl font-black uppercase italic tracking-widest text-center text-primary">
+            <h2 className="text-xl font-black uppercase italic tracking-widest text-center text-teal-600">
               Worker Control Panel
             </h2>
 
@@ -392,8 +406,8 @@ const ProblemDetails = () => {
       {/* Real-Time Status Timeline  */}
       <div className="mt-10 bg-base-100 p-8 rounded-3xl border border-base-200 shadow-sm">
         <h2 className="text-xl font-bold mb-8 flex items-center gap-2">
-          <span className="p-2 bg-primary/10 rounded-lg text-primary text-sm">
-            🕒
+          <span className="p-2 bg-teal-600/10 rounded-lg text-teal-600 text-sm">
+            <FiClock />
           </span>
           Real-Time Status Timeline
         </h2>
@@ -402,7 +416,7 @@ const ProblemDetails = () => {
           {/* STEP 1: Always show the initial report (The 'Open' state) */}
           <li className="step step-primary">
             <div className="flex flex-col items-start ml-4 text-left mb-6">
-              <span className="font-bold text-lg uppercase tracking-tight text-primary">
+              <span className="font-bold text-lg uppercase tracking-tight text-teal-600">
                 Reported
               </span>
               <span className="text-xs opacity-50 font-mono">
@@ -547,7 +561,7 @@ const ProblemDetails = () => {
             <div className="relative h-200 w-full bg-base-300">
               {isImageLoading && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-base-200 z-20">
-                  <span className="loading loading-infinity loading-lg text-primary"></span>
+                  <span className="loading loading-infinity loading-lg text-teal-600"></span>
                   <p className="text-xs font-bold opacity-50 mt-2">
                     LOADING COMPARISON...
                   </p>

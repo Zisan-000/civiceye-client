@@ -1,47 +1,177 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import CountUp from "react-countup";
 import { Link } from "react-router";
 import Leaderboard from "../../pages/Leaderboard/Leaderboard";
+import { FaStar } from "react-icons/fa";
+import { BsHexagonFill } from "react-icons/bs";
+import gsap from "gsap";
+import { ScrollSmoother, ScrollTrigger, SplitText } from "gsap/all";
+
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 
 const Banner = () => {
+  useEffect(() => {
+    // Initialize Smoother
+    const smoother = ScrollSmoother.create({
+      wrapper: "#smooth-wrapper",
+      content: "#smooth-content",
+      smooth: 2, // Seconds it takes to "catch up" to the scroll
+      effects: true, // Allows data-speed and data-lag attributes
+    });
+
+    // Example Banner Parallax effect
+    gsap.to(".banner-image", {
+      scrollTrigger: {
+        trigger: ".banner-section",
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      },
+      y: 200, // Moves image slower than scroll
+      ease: "none",
+    });
+
+    return () => {
+      smoother.kill(); // Clean up on unmount
+    };
+  }, []);
+
+  const bannerTitleRef = useRef(null);
+
+  useEffect(() => {
+    // Target the h2 and p specifically inside the ref
+    const targets = bannerTitleRef.current.querySelectorAll("h2, p");
+
+    const split = new SplitText(targets, {
+      type: "lines, words",
+      linesClass: "clip-text",
+    });
+
+    gsap.from(split.words, {
+      scrollTrigger: {
+        trigger: bannerTitleRef.current,
+        start: "top 85%",
+        toggleActions: "play none none reverse",
+      },
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.02, // Fast stagger for a clean reveal
+      ease: "power2.out",
+    });
+
+    return () => split.revert();
+  }, []);
+
   return (
     <>
-      <div className="min-h-screen bg-base-100 font-sans pb-10">
+      <div className="min-h-screen pb-10 mt-20 font-mozilla-text ">
+        <div
+          className="flex items-center gap-24 whitespace-nowrap"
+          style={{
+            display: "inline-flex",
+            animation: "marquee 40s linear infinite",
+            paddingLeft: "100%",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.animationPlayState = "paused")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.animationPlayState = "running")
+          }
+        >
+          {/* Item 1 - Breaking News Style */}
+          <div className="flex items-center gap-3">
+            <span className="bg-red-600 text-[10px] font-black px-2 py-0.5 rounded-sm text-white animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.5)]">
+              LIVE
+            </span>
+            <span className="text-black text-sm font-semibold tracking-tight">
+              Heavy rain alert: 4 new waterlogging reports in Dhanmondi.
+            </span>
+          </div>
+
+          {/* Item 2 - Gamification/Trust Score */}
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 bg-[#00ADB5] rounded-full shadow-[0_0_10px_#00ADB5] animate-pulse"></div>
+            <span className="text-black text-[11px] font-black uppercase tracking-[0.2em]">
+              Trust Leader:
+            </span>
+            <span className="text-teal-700 text-sm font-medium">
+              User{" "}
+              <span className="text-black border-b border-teal-500/50">
+                zobaer.zi***
+              </span>{" "}
+              just reached 850 points!
+            </span>
+          </div>
+
+          {/* Item 3 - Educational/Tips */}
+          <div className="flex items-center gap-3">
+            <span className="text-teal-900 font-light text-xl">/</span>
+            <span className="text-slate-400 text-sm italic font-medium">
+              CivicEye prevents duplicates within 10m of existing reports.
+            </span>
+          </div>
+
+          {/* Item 4 - System Update */}
+          <div className="flex items-center gap-3">
+            <span className="bg-[#2d333b] text-[#00ADB5] text-[10px] font-black px-2 py-1 rounded border border-[#00ADB5]/20 uppercase">
+              Update
+            </span>
+            <span className="text-teal-700 text-sm font-medium">
+              New "Smart Category" forms added for Waste Management.
+            </span>
+          </div>
+        </div>
+
         {/* ================= SECTION 1: HERO ================= */}
         <section
-          className="relative bg-linear-to-br from-gray-500 via-teal-600 to-teal-800 text-white overflow-hidden py-24 lg:py-32 rounded-3xl shadow-2xl mt-2"
-          style={{
-            WebkitMaskImage:
-              "linear-gradient(to bottom, black 60%, transparent 100%)",
-            maskImage:
-              "linear-gradient(to bottom, black 60%, transparent 100%)",
-          }}
+          className="relative text-white overflow-hidden py-24 lg:py-32 rounded-3xl shadow-2xl mt-2 bg-gray-900"
+          // style={{
+          //   WebkitMaskImage:
+          //     "linear-gradient(to bottom, black 60%, transparent 100%)",
+          //   // maskImage:
+          //   //   "linear-gradient(to bottom, black 60%, transparent 100%)",
+          // }}
         >
-          {/* Abstract Background Shapes */}
-          <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-20">
+          {/* 1. The ImgBB Photo as the Full Background */}
+          <img
+            src="https://i.ibb.co.com/DDYFc0Bm/pexels-the-ahnafpiash-11260693.jpg"
+            alt="City Background"
+            className="absolute inset-0 w-full h-full object-cover z-0 banner-image"
+          />
+
+          <div className="absolute inset-0 z-0 bg-linear-to-br from-black/80 via-black/50 to-teal-900/70 "></div>
+
+          {/* 3. Abstract Background Shapes (Opacity lowered so it doesn't wash out the city) */}
+          <div className="absolute inset-0 w-full h-full overflow-hidden z-0 opacity-10 pointer-events-none">
             <div className="absolute -top-24 -left-24 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-blob"></div>
             <div className="absolute top-48 right-12 w-72 h-72 bg-pink-300 rounded-full mix-blend-overlay filter blur-3xl animate-blob animation-delay-2000"></div>
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-            <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide text-white">
+          <div className="relative z-10 max-w-7xl mx-auto px-6 text-center ">
+            <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold  text-white">
               Empowering Citizens, Building Better Cities
             </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
+
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 ">
               See a Problem? <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-300 to-amber-500">
+              {/* Changed text gradient to bright yellow/amber so it stands out against the dark photo */}
+              <span className="text-transparent font-mozilla-text bg-clip-text  bg-linear-to-br from-white via-teal-600 to-teal-500 ">
                 Report it with CivicEye.
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-indigo-100 mb-10 max-w-2xl mx-auto font-medium">
+
+            <p className="text-lg md:text-xl text-indigo-100 mb-10 max-w-2xl mx-auto font-medium shadow-black drop-shadow-md">
               Join thousands of active citizens. Report potholes, water leaks,
               and community issues instantly. Earn trust points and watch your
               city improve.
             </p>
+
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 to="/problems/report"
-                className="btn btn-warning btn-lg shadow-lg hover:scale-105 transition-transform border-none"
+                className="btn btn-warning btn-lg shadow-lg hover:scale-105 transition-transform border-none text-white  bg-linear-to-br from-gray-500 via-teal-600 to-teal-800"
               >
                 Report an Issue Now
               </Link>
@@ -58,15 +188,15 @@ const Banner = () => {
         <Leaderboard></Leaderboard>
 
         {/* ================= SECTION 2: HOW IT WORKS ================= */}
-        <section className="max-w-7xl mx-auto px-6 py-24">
-          <div className="text-center mb-16">
+        <section className="max-w-7xl mx-auto px-6 py-24 banner-section">
+          <div className="text-center mb-16" ref={bannerTitleRef}>
             <h2 className="text-4xl font-bold text-base-content mb-4">
               How CivicEye Works
             </h2>
-            <p className="text-gray-500 max-w-xl mx-auto">
+            <h3 className="text-gray-500 max-w-xl mx-auto">
               Three simple steps to make your neighborhood a better, safer place
               to live.
-            </p>
+            </h3>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -106,7 +236,7 @@ const Banner = () => {
             {/* Card 2 */}
             <div className="card bg-base-100 shadow-xl border-t-4 border-primary hover:-translate-y-2 transition-transform duration-300">
               <div className="card-body items-center text-center">
-                <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                <div className="w-16 h-16 rounded-2xl bg-teal-600/10 text-teal-600 flex items-center justify-center mb-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-8 w-8"
@@ -166,33 +296,42 @@ const Banner = () => {
         </section>
 
         {/* ================= SECTION 3: KEY FEATURES ================= */}
-        <section className="bg-base-200 py-24 rounded-2xl shadow-lg border border-base-300">
+        <section className="bg-base-200 py-24 rounded-2xl shadow-lg border border-base-300 banner-section">
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col lg:flex-row items-center gap-16">
               <div className="lg:w-1/2">
                 <div className="relative">
                   {/* Decorative background behind image placeholder */}
-                  <div className="absolute -inset-4 bg-linear-to-r from-primary to-teal-500 rounded-3xl opacity-30 blur-lg"></div>
-                  <div className="relative bg-base-100 p-8 rounded-3xl shadow-2xl border border-base-300">
+                  <div className="absolute -inset-4 bg-linear-to-r from-green-800 to-teal-400 rounded-3xl opacity-30 blur-lg"></div>
+                  <div
+                    className="relative bg-base-100 p-8 rounded-3xl shadow-2xl border border-base-300"
+                    ref={bannerTitleRef}
+                  >
                     <h3 className="text-2xl font-bold mb-6 text-center">
                       Smart Tech for Smart Cities
                     </h3>
                     <div className="space-y-4">
                       {/* Fake UI mockup of features */}
                       <div className="flex items-center gap-4 p-4 bg-base-200 rounded-xl">
-                        <div className="badge badge-primary badge-lg">+5</div>
+                        <div className="badge bg-teal-400 text-white badge-lg">
+                          +5
+                        </div>
                         <div className="font-semibold">
                           Trust Score Rewarded
                         </div>
                       </div>
                       <div className="flex items-center gap-4 p-4 bg-base-200 rounded-xl">
-                        <div className="badge badge-warning badge-lg">AI</div>
+                        <div className="badge bg-teal-600 text-white badge-lg">
+                          AI
+                        </div>
                         <div className="font-semibold">
                           Smart Duplicate Detection
                         </div>
                       </div>
                       <div className="flex items-center gap-4 p-4 bg-base-200 rounded-xl">
-                        <div className="badge badge-info badge-lg">↑ 42</div>
+                        <div className="badge bg-teal-900 text-white badge-lg">
+                          ↑ 42
+                        </div>
                         <div className="font-semibold">Community Upvotes</div>
                       </div>
                     </div>
@@ -200,7 +339,7 @@ const Banner = () => {
                 </div>
               </div>
 
-              <div className="lg:w-1/2 space-y-8">
+              <div className="lg:w-1/2 space-y-8" ref={bannerTitleRef}>
                 <h2 className="text-4xl font-bold text-base-content">
                   More than just a complaint box.
                 </h2>
@@ -211,8 +350,8 @@ const Banner = () => {
 
                 <ul className="space-y-6">
                   <li className="flex gap-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                      ⭐
+                    <div className="w-12 h-12 rounded-full bg-teal-600/20 flex items-center justify-center shrink-0">
+                      <FaStar className="text-yellow-400" />
                     </div>
                     <div>
                       <h4 className="text-xl font-bold">
@@ -226,7 +365,7 @@ const Banner = () => {
                   </li>
                   <li className="flex gap-4">
                     <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">
-                      🛑
+                      <BsHexagonFill className="text-red-500" />
                     </div>
                     <div>
                       <h4 className="text-xl font-bold">Duplicate Detection</h4>
@@ -245,8 +384,10 @@ const Banner = () => {
         {/* ================= SECTION 4: IMPACT STATS ================= */}
         <section className="py-20 max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="stat bg-base-100 shadow-lg rounded-3xl border border-base-200 text-center py-8 hover:bg-blue-500 hover:text-white transition-colors cursor-default">
-              <div className="stat-title opacity-70">Total Reports</div>
+            <div className="stat  shadow-lg rounded-3xl border border-base-200 text-center py-8 bg-blue-500/80 text-white transition-colors cursor-default">
+              <div className="stat-title text-gray-200 text-sm">
+                Total Reports
+              </div>
               <div className="stat-value text-4xl mt-2 mb-1">
                 <CountUp
                   end={1204}
@@ -255,7 +396,7 @@ const Banner = () => {
                   scrollSpyOnce={true}
                 />
               </div>
-              <div className="stat-desc font-medium opacity-80">
+              <div className="stat-desc font-medium text-gray-200 text-sm">
                 ↗︎
                 <CountUp
                   end={400}
@@ -266,8 +407,10 @@ const Banner = () => {
                 <span className="pl-1">this month</span>
               </div>
             </div>
-            <div className="stat bg-base-100 shadow-lg rounded-3xl border border-base-200 text-center py-8 hover:bg-success hover:text-white transition-colors cursor-default">
-              <div className="stat-title opacity-70">Issues Resolved</div>
+            <div className="stat  shadow-lg rounded-3xl border border-base-200 text-center py-8 bg-success/80 text-white transition-colors cursor-default">
+              <div className="stat-title text-gray-200 text-sm">
+                Issues Resolved
+              </div>
               <div className="stat-value text-4xl mt-2 mb-1">
                 <CountUp
                   end={89}
@@ -277,12 +420,14 @@ const Banner = () => {
                 />
                 %
               </div>
-              <div className="stat-desc font-medium opacity-80">
+              <div className="stat-desc font-medium text-gray-200 text-sm">
                 City-wide average
               </div>
             </div>
-            <div className="stat bg-base-100 shadow-lg rounded-3xl border border-base-200 text-center py-8 hover:bg-warning hover:text-white transition-colors cursor-default">
-              <div className="stat-title opacity-70">Active Citizens</div>
+            <div className="stat  shadow-lg rounded-3xl border border-base-200 text-center py-8 bg-warning/80 text-white transition-colors cursor-default">
+              <div className="stat-title text-gray-200 text-sm">
+                Active Citizens
+              </div>
               <div className="stat-value text-4xl mt-2 mb-1">
                 <CountUp
                   end={3000}
@@ -291,12 +436,14 @@ const Banner = () => {
                   scrollSpyOnce={true}
                 />
               </div>
-              <div className="stat-desc font-medium opacity-80">
+              <div className="stat-desc font-medium text-gray-200 text-sm">
                 Working together
               </div>
             </div>
-            <div className="stat bg-base-100 shadow-lg rounded-3xl border border-base-200 text-center py-8 hover:bg-secondary hover:text-white transition-colors cursor-default">
-              <div className="stat-title opacity-70">Upvotes Cast</div>
+            <div className="stat  shadow-lg rounded-3xl border border-base-200 text-center py-8 bg-secondary/80 text-white transition-colors cursor-default">
+              <div className="stat-title text-gray-200 text-sm">
+                Upvotes Cast
+              </div>
               <div className="stat-value text-4xl mt-2 mb-1">
                 <CountUp
                   end={12}
@@ -306,7 +453,7 @@ const Banner = () => {
                 />
                 K+
               </div>
-              <div className="stat-desc font-medium opacity-80">
+              <div className="stat-desc font-medium text-gray-200 text-sm">
                 Validating problems
               </div>
             </div>
@@ -314,8 +461,8 @@ const Banner = () => {
         </section>
 
         {/* ================= SECTION 5: CTA ================= */}
-        <section className="max-w-5xl mx-auto px-6 mb-10">
-          <div className="bg-linear-to-br from-indigo-700 via-purple-700 to-indigo-800 text-white rounded-3xl p-10 md:p-16 text-center shadow-2xl relative overflow-hidden">
+        <section className=" mx-auto px-6 mb-10">
+          <div className="bg-linear-to-br from-teal-700/60 via-teal-400/30 to-white text-black rounded-3xl p-10 md:p-16 text-center shadow-2xl relative overflow-hidden">
             {/* Grid Pattern overlay - kept white (#ffffff) as it looks great against blue */}
             <div
               className="absolute inset-0 opacity-10"
@@ -336,7 +483,7 @@ const Banner = () => {
               </p>
               <Link
                 to="/auth/register"
-                className="btn btn-warning btn-lg px-10 rounded-full shadow-xl hover:scale-105 transition-transform border-none"
+                className="btn bg-teal-600 text-white btn-lg px-10 rounded-full shadow-xl hover:scale-105 transition-transform border-none"
               >
                 Join CivicEye Today
               </Link>

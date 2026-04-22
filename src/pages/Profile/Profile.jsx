@@ -4,6 +4,7 @@ import PaymentModal from "../Payment/PaymentModal";
 import toast from "react-hot-toast";
 // FIX: Ensure this is 'react-router-dom'
 import { useLocation, useNavigate } from "react-router";
+import { Helmet } from "react-helmet";
 
 export default function Profile() {
   const { user, dbUser, loading } = use(AuthContext);
@@ -26,7 +27,7 @@ export default function Profile() {
     const queryParams = new URLSearchParams(location.search);
     const status = queryParams.get("status");
     const tranId = queryParams.get("transactionId");
-    console.log(tranId);
+    //console.log(tranId);
 
     if (status === "success") {
       // 1. Trigger the toast immediately
@@ -98,8 +99,11 @@ export default function Profile() {
 
   return (
     <div className="max-w-5xl mx-auto p-6 my-10 animate-fadeIn">
+      <Helmet>
+        <title>Profile || CivicEye</title>
+      </Helmet>
       {/* ================= HEADER SECTION ================= */}
-      <div className="relative bg-linear-to-r from-[#222831] to-[#393E46] rounded-3xl p-8 mb-8 shadow-2xl overflow-hidden">
+      <div className="relative bg-linear-to-r from-[#222831] to-[#393E46] rounded-3xl p-8 my-8 shadow-2xl overflow-hidden">
         <div className="absolute top-0 right-0 p-10 opacity-10">
           <svg width="200" height="200" fill="white" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
@@ -127,7 +131,8 @@ export default function Profile() {
             </p>
             <div className="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
               <span className="badge badge-outline text-[#EEEEEE] border-gray-600">
-                ID: {user?.uid?.slice(0, 8)}
+                ID:{" "}
+                {typeof user?.uid === "string" ? user.uid.slice(0, 8) : "N/A"}
               </span>
               <span className="badge bg-[#00ADB5] text-white border-none">
                 Verified Account
@@ -195,7 +200,7 @@ export default function Profile() {
           <div className="grid grid-cols-2 gap-4">
             <div className="grid grid-cols-2 gap-4">
               {/* Real Reports Count */}
-              <div className="bg-[#EEEEEE] p-6 rounded-3xl shadow-sm border border-gray-200">
+              <div className="bg-indigo-200/50 p-6 rounded-3xl shadow-sm border border-gray-200">
                 <p className="text-xs font-bold text-gray-500 uppercase">
                   Reports Submitted
                 </p>
@@ -205,7 +210,7 @@ export default function Profile() {
               </div>
 
               {/* Real Upvotes Count */}
-              <div className="bg-[#EEEEEE] p-6 rounded-3xl shadow-sm border border-gray-200">
+              <div className="bg-teal-200/50 p-6 rounded-3xl shadow-sm border border-gray-200">
                 <p className="text-xs font-bold text-gray-500 uppercase">
                   Upvotes Received
                 </p>

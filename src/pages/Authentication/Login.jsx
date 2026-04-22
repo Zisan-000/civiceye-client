@@ -14,11 +14,11 @@ const Login = () => {
     googleLogin()
       .then((result) => {
         const user = result.user;
-        console.log(user);
+        //console.log(user);
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
       });
   };
 
@@ -31,7 +31,7 @@ const Login = () => {
     login(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log("Logged in:", user.email);
+        //console.log("Logged in:", user.email);
 
         // Success feedback
         alert(`Welcome back, ${user.email}!`);

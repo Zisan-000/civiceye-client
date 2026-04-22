@@ -11,7 +11,7 @@ const Loading = () => {
         />
       </div>
       <h2 className="text-xl font-black italic uppercase tracking-tighter animate-pulse">
-        Civic<span className="text-primary">Eye</span> is Loading...
+        Civic<span className="text-teal-600">Eye</span> is Loading...
       </h2>
     </div>
   );

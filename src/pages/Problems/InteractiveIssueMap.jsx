@@ -126,7 +126,7 @@ export default function InteractiveIssueMap() {
         <title>Map || CivicEye</title>
       </Helmet>
       {/* Title Section */}
-      <div className="flex justify-between items-end mb-6">
+      <div className="flex justify-between items-end my-16">
         <div>
           <h1 className="text-3xl font-black text-[#222831] tracking-tight italic">
             COMMUNITY LIVE MAP
@@ -237,7 +237,7 @@ export default function InteractiveIssueMap() {
                     </p>
 
                     <div className="flex items-center justify-between border-t pt-2 border-dashed border-slate-200">
-                      <span className="text-xs font-bold text-primary">
+                      <span className="text-xs font-bold text-teal-600">
                         👍 {issue.upvotes || 0}
                       </span>
                       <Link
