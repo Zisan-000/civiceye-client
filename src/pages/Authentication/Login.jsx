@@ -51,7 +51,7 @@ const Login = () => {
       <Helmet>
         <title>Login || CivicEye</title>
       </Helmet>
-      <div className="min-h-screen flex items-center my-10 justify-around bg-linear-to-br from-cyan-100 via-indigo-100 to-white px-4 ">
+      <div className="min-h-screen lg:min-h-screen flex items-center my-20 justify-around bg-linear-to-br from-cyan-100 via-indigo-100 to-white px-4 py-10 ">
         <div className="w-full max-w-5xl grid lg:grid-cols-2 gap-20 items-center">
           {/* Left Content */}
           <div className="text-blue-500 space-y-6 text-center lg:text-left">

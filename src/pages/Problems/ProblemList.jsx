@@ -4,10 +4,6 @@ import toast from "react-hot-toast";
 import { Link } from "react-router";
 import { Helmet } from "react-helmet";
 import { TbUrgent } from "react-icons/tb";
-import { ScrollSmoother, ScrollTrigger } from "gsap/all";
-import gsap from "gsap";
-
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 export default function ProblemList() {
   const { user } = use(AuthContext);
@@ -22,38 +18,13 @@ export default function ProblemList() {
       problem.category?.toLowerCase().includes(query)
     );
   });
-  useEffect(() => {
-    // Initialize Smoother
-    const smoother = ScrollSmoother.create({
-      wrapper: "#smooth-wrapper",
-      content: "#smooth-content",
-      smooth: 2, // Seconds it takes to "catch up" to the scroll
-      effects: true, // Allows data-speed and data-lag attributes
-    });
-
-    // Example Banner Parallax effect
-    gsap.to(".banner-image", {
-      scrollTrigger: {
-        trigger: ".banner-section",
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-      y: 200, // Moves image slower than scroll
-      ease: "none",
-    });
-
-    return () => {
-      smoother.kill(); // Clean up on unmount
-    };
-  }, []);
 
   const searchResults = problems.filter((problem) => {
     const query = searchQuery.toLowerCase();
     return (
       problem.userEmail?.toLowerCase().includes(query) ||
       problem.category?.toLowerCase().includes(query) ||
-      problem.description?.toLowerCase().includes(query) // Added description for better search
+      problem.description?.toLowerCase().includes(query)
     );
   });
 
@@ -377,12 +348,15 @@ export default function ProblemList() {
         </div>
       </div>
       <div className="flex flex-col justify-between items-center gap-2 my-10 lg:flex-row">
-        <button
-          onClick={handleDownloadReport}
-          className="btn btn-dash rounded-2xl font-black uppercase italic shadow-lg lg:w-72 lg:h-20"
-        >
-          Download Monthly PDF Report
-        </button>
+        {isAdmin && (
+          <button
+            onClick={handleDownloadReport}
+            className="btn btn-dash rounded-2xl font-black uppercase italic shadow-lg lg:w-72 lg:h-20"
+          >
+            Download Monthly PDF Report
+          </button>
+        )}
+
         <div className="flex justify-end mb-4 gap-2 items-center ">
           <span className="text-sm font-semibold">Sort By:</span>
           <select

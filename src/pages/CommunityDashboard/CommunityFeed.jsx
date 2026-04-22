@@ -96,7 +96,7 @@ const CommunityFeed = () => {
   }
 
   return (
-    <div className="min-h-screen  py-12 px-4">
+    <div className="min-h-screen py-12 px-4">
       <Helmet>
         <title>Feed || CivicEye</title>
       </Helmet>

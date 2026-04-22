@@ -37,12 +37,12 @@ const CommunityDashboard = () => {
     );
 
   return (
-    <div className=" bg-base-200 p-8 my-10 rounded-2xl">
+    <div className=" p-8 my-10 rounded-2xl">
       <Helmet>
         <title>Dashboard || CivicEye</title>
       </Helmet>
       <div className="max-w-6xl mx-auto mt-10">
-        <header className="mb-12 text-center lg:text-left">
+        <header className="mb-12 text-center lg:text-left p-3">
           <h1 className="text-5xl font-black uppercase italic tracking-tighter text-slate-900">
             Community <span className="text-teal-600">Impact</span>
           </h1>

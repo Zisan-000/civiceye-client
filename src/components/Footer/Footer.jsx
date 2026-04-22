@@ -48,7 +48,7 @@ const Footer = () => {
             Smart Categories
           </Link>
           <Link
-            to="/problems/list"
+            to="/feed"
             className="link link-hover hover:text-[#00ADB5] transition-colors mb-2"
           >
             Public Feed
@@ -63,7 +63,7 @@ const Footer = () => {
 
         <nav>
           <h6 className="footer-title text-[#00ADB5] opacity-100 font-bold mb-4">
-            <Link to="/leaderboard">Leaderboard</Link>
+            Links
           </h6>
           <Link
             to="/dashboard"
@@ -75,10 +75,10 @@ const Footer = () => {
             Contact Admin
           </a>
           <a className="link link-hover hover:text-[#00ADB5] transition-colors mb-2">
-            City Partnerships
+            <Link to="/leaderboard">Leaderboard</Link>
           </a>
           <a className="link link-hover hover:text-[#00ADB5] transition-colors">
-            Press Kit
+            <Link to="/about">About </Link>
           </a>
         </nav>
 

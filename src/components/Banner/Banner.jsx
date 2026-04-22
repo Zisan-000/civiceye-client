@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { use, useEffect, useRef } from "react";
 import CountUp from "react-countup";
 import { Link } from "react-router";
 import Leaderboard from "../../pages/Leaderboard/Leaderboard";
@@ -6,37 +6,14 @@ import { FaStar } from "react-icons/fa";
 import { BsHexagonFill } from "react-icons/bs";
 import gsap from "gsap";
 import { ScrollSmoother, ScrollTrigger, SplitText } from "gsap/all";
+import { AuthContext } from "../../provider/AuthProvider";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 
 const Banner = () => {
-  useEffect(() => {
-    // Initialize Smoother
-    const smoother = ScrollSmoother.create({
-      wrapper: "#smooth-wrapper",
-      content: "#smooth-content",
-      smooth: 2, // Seconds it takes to "catch up" to the scroll
-      effects: true, // Allows data-speed and data-lag attributes
-    });
-
-    // Example Banner Parallax effect
-    gsap.to(".banner-image", {
-      scrollTrigger: {
-        trigger: ".banner-section",
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-      y: 200, // Moves image slower than scroll
-      ease: "none",
-    });
-
-    return () => {
-      smoother.kill(); // Clean up on unmount
-    };
-  }, []);
-
   const bannerTitleRef = useRef(null);
+  const { user } = use(AuthContext);
+  console.log(user);
 
   useEffect(() => {
     // Target the h2 and p specifically inside the ref
@@ -185,7 +162,7 @@ const Banner = () => {
           </div>
         </section>
 
-        <Leaderboard></Leaderboard>
+        {user?.email ? <Leaderboard></Leaderboard> : ""}
 
         {/* ================= SECTION 2: HOW IT WORKS ================= */}
         <section className="max-w-7xl mx-auto px-6 py-24 banner-section">

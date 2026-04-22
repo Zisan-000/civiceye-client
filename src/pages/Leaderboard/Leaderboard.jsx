@@ -8,8 +8,7 @@ const Leaderboard = () => {
 
   useEffect(() => {
     // Use your actual Vercel URL here!
-    const url =
-      import.meta.env.VITE_API_URL || "https://civiceye-server.vercel.app";
+    const url = "https://civiceye-server.vercel.app";
 
     fetch(`${url}/api/leaderboard`)
       .then((res) => res.json())

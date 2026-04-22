@@ -49,7 +49,7 @@ const Careers = () => {
 
   return (
     // Added flex and min-h-screen to ensure perfect vertical and horizontal centering
-    <div className="min-h-screen bg-base-200 flex items-center justify-center py-10 px-4">
+    <div className="min-h-screen flex items-center justify-center py-10 px-4">
       <Helmet>
         <title>Career || CivicEye</title>
       </Helmet>
