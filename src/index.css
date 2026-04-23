@@ -31,7 +31,7 @@ body {
   background-position:
     0 0,
     10px 10px;
-  animation: smoothGradient 50s ease-in-out infinite;
+  animation: smoothGradient 80s ease-in-out infinite;
 }
 
 @keyframes smoothGradient {
