@@ -527,7 +527,7 @@ export default function SmartCategoryForm() {
           <div className="mb-6">
             <label className="label">
               <span className="label-text font-semibold text-lg">
-                {/* 2. Specific Location / Address */}
+                3. Specific Location / Address
               </span>
             </label>
             <textarea
