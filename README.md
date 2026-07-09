@@ -45,6 +45,6 @@ Make sure you have Node.js installed on your machine.
 ### 1. Clone the repository
 
 ```bash
-git clone [https://github.com/Zisan-000/civiceye-client.git](https://github.com/your-username/civiceye-client.git)
+git clone [https://github.com/Zisan-000/civiceye-client.git]
 cd civiceye-client
 ```
