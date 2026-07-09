@@ -48,3 +48,7 @@ Make sure you have Node.js installed on your machine.
 git clone [https://github.com/Zisan-000/civiceye-client.git]
 cd civiceye-client
 ```
+
+## 🔴 Project Live Link
+
+## **[CivicEye](https://project-civiceye.netlify.app/)**
