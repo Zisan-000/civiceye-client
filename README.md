@@ -1,16 +1,50 @@
-# React + Vite
+# 👁️ CivicEye: Smart Community Issue Resolver
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **A modern, geo-aware platform for communities to report, verify, and resolve local infrastructure issues.**
+> Developed for **CSE471: System Analysis and Design** at **BRAC University**.
 
-Currently, two official plugins are available:
+## 📋 Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+CivicEye is an interactive React application designed to bridge the gap between citizens and community management. Instead of relying on vague text complaints, CivicEye utilizes an interactive map for precise geo-tagged reporting, a dynamic categorization engine, and real-time status tracking to ensure issues like broken streetlights, water leaks, and fire hazards are resolved efficiently.
 
-## React Compiler
+### 👥 Group
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Zobaer Mahmud Zisan** - Urgency Calculation & Heatmap Analytics
+- **Sumaiya Tasnim Khan** - Status Workflows & Real-Time Tracking
+- **Jannatul Ferdous** - Smart Forms & Interactive Issue Maps
+- **Shah Ahafik Arman** - Trust Score Engine & Leaderboards
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Key Features
+
+- **📍 Geo-Tagged Issue Reporting:** Users pin the exact location of an issue on an interactive map, ensuring precise coordinate tracking.
+- **📝 Smart Categorization Forms:** Form fields change dynamically based on the selected issue category to gather accurate severity metrics.
+- **📊 Unified Dashboard & Details:** Displays real-time status timelines, AI-driven Urgency Scores, and community verifications (upvotes/flags).
+- **🗺️ Interactive Maps & Heatmaps:** Visualizes active issues with color-coded pins and identifies chronic problem zones for administrators.
+- **🤖 NLP Auto-Categorization:** Automatically categorizes "General" map reports based on keyword detection in the description.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend Framework:** React.js
+- **Styling:** TailwindCSS & DaisyUI
+- **Routing:** React Router DOM
+- **Maps:** Leaflet & React-Leaflet
+- **Build Tool:** Vite
+
+---
+
+## 💻 Local Installation & Setup
+
+### Prerequisites
+
+Make sure you have Node.js installed on your machine.
+
+### 1. Clone the repository
+
+```bash
+git clone [https://github.com/Zisan-000/civiceye-client.git](https://github.com/your-username/civiceye-client.git)
+cd civiceye-client
+```

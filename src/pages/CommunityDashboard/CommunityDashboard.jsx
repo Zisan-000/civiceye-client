@@ -160,7 +160,7 @@ const CommunityDashboard = () => {
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <div className="bg-slate-900 text-white p-8 rounded-[40px] shadow-xl">
+            <div className="bg-slate-700 text-white p-8 rounded-[40px] shadow-xl">
               <p className="text-[10px] font-black uppercase opacity-50 tracking-widest mb-1">
                 Total Reports
               </p>
@@ -171,7 +171,7 @@ const CommunityDashboard = () => {
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <div className="bg-teal-600 text-white p-8 rounded-[40px] shadow-xl">
+            <div className="bg-teal-500 text-white p-8 rounded-[40px] shadow-xl">
               <p className="text-[10px] font-black uppercase opacity-50 tracking-widest mb-1">
                 Active Now
               </p>

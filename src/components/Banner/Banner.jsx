@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 const Banner = () => {
   const bannerTitleRef = useRef(null);
   const { user } = use(AuthContext);
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     // Target the h2 and p specifically inside the ref
@@ -162,7 +162,21 @@ const Banner = () => {
           </div>
         </section>
 
-        {user?.email ? <Leaderboard></Leaderboard> : ""}
+        <div>
+          {user?.email ? (
+            <Leaderboard />
+          ) : (
+            <div className="text-center p-10 my-10 bg-gray-50/40 rounded-2xl border-2 border-dashed">
+              <h2 className="text-xl font-bold text-[#222831]">Members Only</h2>
+              <p className="text-gray-500">
+                Please login to view the community impact leaderboard.
+              </p>
+              <Link to="/auth/login" className="btn btn-primary mt-4">
+                Login Now
+              </Link>
+            </div>
+          )}
+        </div>
 
         {/* ================= SECTION 2: HOW IT WORKS ================= */}
         <section className="max-w-7xl mx-auto px-6 py-24 banner-section">
